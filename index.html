@@ -65,6 +65,10 @@
     #f_program{border-color:rgba(212,146,42,.35);}
     #f_program:focus{border-color:var(--gold);}
 
+    /* NISN field info */
+    .nisn-info{font-size:.72rem;color:var(--gold-lt);margin-top:5px;padding:5px 8px;background:rgba(212,146,42,.08);border-radius:6px;border-left:3px solid var(--gold);}
+    .field-hidden{display:none;}
+
     /* SECTION DIVIDER IN FORM */
     .form-section{grid-column:1/-1;margin-top:10px;margin-bottom:4px;}
     .form-section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);display:flex;align-items:center;gap:8px;padding:8px 0;}
@@ -99,9 +103,11 @@
     .foto-upload-icon{font-size:2rem;margin-bottom:8px;}
     .foto-upload-text{font-size:.82rem;color:var(--muted);}
     .foto-upload-text strong{color:var(--gold-lt);display:block;margin-bottom:3px;}
+    .foto-upload-spec{font-size:.75rem;color:#5a7a9a;margin-top:6px;padding:4px 8px;background:rgba(59,130,246,.08);border-radius:6px;border:1px solid rgba(59,130,246,.2);}
     .foto-preview-wrap{display:none;margin-top:12px;position:relative;}
-    .foto-preview-img{width:100%;max-height:180px;object-fit:cover;border-radius:8px;border:2px solid var(--gold);display:block;}
+    .foto-preview-img{width:100%;max-height:200px;object-fit:contain;border-radius:8px;border:2px solid var(--gold);display:block;background:#111;}
     .foto-preview-name{font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;}
+    .foto-preview-newname{font-size:.75rem;color:var(--gold-lt);margin-top:3px;text-align:center;font-weight:700;}
     .foto-remove-btn{position:absolute;top:6px;right:6px;background:rgba(239,68,68,.85);border:none;color:#fff;border-radius:50%;width:24px;height:24px;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
     .foto-uploading{display:none;align-items:center;gap:8px;margin-top:8px;font-size:.8rem;color:var(--gold-lt);}
     .foto-url-display{display:none;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:6px;font-size:.75rem;color:#86efac;}
@@ -125,6 +131,11 @@
     .toolbar select{min-width:160px;}
     .toolbar input::placeholder{color:#3d4a5c;}
     .toolbar input:focus,.toolbar select:focus{border-color:var(--gold);}
+
+    /* YEAR SELECTOR */
+    .year-selector{display:flex;align-items:center;gap:8px;}
+    .year-selector label{font-size:.78rem;color:var(--muted);font-weight:600;white-space:nowrap;}
+    .year-selector select{min-width:120px!important;}
 
     /* TABLE */
     .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);box-shadow:var(--shadow);}
@@ -245,31 +256,52 @@
     .role-admin{background:rgba(212,146,42,.2);color:var(--gold-lt);border:1px solid rgba(212,146,42,.3);}
     .role-user{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.25);}
     .user-actions{display:flex;gap:6px;}
-    .section-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
 
-    /* PRINT */
+    /* ═══════════════════════════════════════
+       PRINT STYLES — PDF rapi menggunakan print
+    ═══════════════════════════════════════ */
     @media print {
-      body{background:#fff!important;color:#000!important;}
-      .header,.tabs,.toolbar,.btn-row,.td-act,.no-print{display:none!important;}
-      .main{max-width:100%!important;padding:0!important;}
-      .panel{display:block!important;}
-      #panel-data{display:block!important;}
-      #panel-input,#panel-user{display:none!important;}
-      .table-wrap{border:1px solid #ccc!important;box-shadow:none!important;}
-      table{min-width:auto!important;font-size:.68rem!important;}
-      thead{background:#1e3a5f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-      thead th{color:#fff!important;padding:5px 6px!important;}
-      tbody tr{background:#fff!important;}
-      tbody tr:nth-child(even){background:#f8fafc!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-      tbody td{padding:4px 6px!important;color:#1e293b!important;}
-      .badge,.bprog{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-      .stats{display:none!important;}
-      .print-header{display:block!important;}
-      .card{border:none!important;padding:0!important;box-shadow:none!important;background:#fff!important;}
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { background: #fff !important; color: #000 !important; font-size: 9pt !important; }
+      .header, .tabs, .toolbar, .stats, .btn-row, .td-act, .no-print,
+      #panel-input, #panel-user, #loading, #toast, .modal-bg { display: none !important; }
+      .main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .panel { display: block !important; }
+      #panel-data { display: block !important; }
+      .card { border: none !important; padding: 0 !important; box-shadow: none !important; background: #fff !important; }
+
+      /* Header cetak */
+      .print-header { display: block !important; text-align: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #1e3a5f; }
+      .print-header h2 { font-size: 13pt !important; font-weight: 800; color: #0d2137 !important; margin-bottom: 3px; }
+      .print-header p { font-size: 9pt !important; color: #444 !important; }
+      .print-header .print-instansi { font-size: 10pt !important; font-weight: 700; color: #1e3a5f !important; margin-bottom: 2px; }
+
+      /* Tabel */
+      .table-wrap { border: 1px solid #aaa !important; box-shadow: none !important; overflow: visible !important; border-radius: 0 !important; }
+      table { min-width: auto !important; width: 100% !important; font-size: 7.5pt !important; border-collapse: collapse !important; }
+      thead { background: #1e3a5f !important; }
+      thead th { color: #fff !important; padding: 5px 5px !important; font-size: 7pt !important; border: 1px solid #2d5a9e !important; text-align: center !important; }
+      thead tr:first-child th { font-size: 9pt !important; background: #0d2137 !important; padding: 7px !important; }
+      tbody tr { background: #fff !important; page-break-inside: avoid; }
+      tbody tr:nth-child(even) { background: #f0f4fb !important; }
+      tbody td { padding: 4px 5px !important; color: #111 !important; border: 1px solid #ccc !important; vertical-align: middle !important; }
+      .td-no { text-align: center !important; font-weight: 700 !important; }
+      .badge, .bprog { padding: 1px 5px !important; font-size: 7pt !important; border-radius: 3px !important; }
+      .bl { background: #d0e4ff !important; color: #1e3a5f !important; }
+      .bp { background: #fce4f7 !important; color: #6b1260 !important; }
+      .ba { background: #d4f7de !important; color: #14532d !important; }
+      .bprog-c { background: #d0e4ff !important; color: #1e3a5f !important; }
+      .bprog-b { background: #d4f7de !important; color: #14532d !important; }
+      .bprog-a { background: #fef3c7 !important; color: #78350f !important; }
+      .td-foto { display: none !important; }
+      .foto-thumb { display: none !important; }
+
+      /* Footer cetak */
+      .print-footer { display: block !important; margin-top: 16px; text-align: right; font-size: 8pt; color: #555; }
+      .print-footer strong { color: #0d2137; }
     }
-    .print-header{display:none;text-align:center;margin-bottom:16px;}
-    .print-header h2{font-size:1rem;font-weight:700;color:#1e293b;}
-    .print-header p{font-size:.8rem;color:#64748b;margin-top:4px;}
+    .print-header { display: none; }
+    .print-footer { display: none; }
 
     @media(max-width:820px){
       .login-content{flex-direction:column;}
@@ -291,12 +323,7 @@
 ═══════════════════════════════════════ -->
 <script>
   // 🔴 WAJIB DIISI: Ganti dengan URL deployment Google Apps Script Anda
-  // Cara mendapatkan URL:
-  //   1. Buka Google Apps Script → Deploy → New deployment
-  //   2. Pilih type: Web app
-  //   3. Execute as: Me | Who has access: Anyone
-  //   4. Klik Deploy → salin URL-nya → paste di sini
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbxPOCZ_niRdsb31pQyZ-7Min7JDNXMR1Tl4cMe0WHSc6q2tabYoSxDg9RZYOqoxV2EB/exec';
+  var GAS_URL = 'https://script.google.com/macros/s/GANTI_DENGAN_URL_DEPLOYMENT_ANDA/exec';
 </script>
 
 <!-- LOGIN -->
@@ -311,11 +338,11 @@
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMhBmR7d3B9iOwiNb4QWaKVznzguLJYQu6ms0JoBx7kXlH6s9lNaSpX4XrGeaiNUm0gUgiBXZrhB0R-QrcyCrlS9OvXe9jq6h_8hM3IXX29MOYph-Dg6_vFkHvvQoSlKKGg-y9o_HCo2maYl2GxArwZMQ5eRkOcC0iDSQRJUJeMI1W12YvXAZS2HOPQEiS/s219/Logo%20PKBM%20SINAR%20KASIH.png" alt="Logo"/>
           <div class="login-logo-text">
             <h2>PKBM SINAR KASIH</h2>
-            <p>SISTEM PENDATAAN TAHUN 2026</p>
+            <p>SISTEM PENDATAAN</p>
           </div>
         </div>
         <div class="login-title">Selamat Datang 👋</div>
-        <div class="login-sub">Masuk untuk mengakses sistem<br/>input data peserta didik</div>
+        <div class="login-sub">Masuk untuk mengakses sistem input data peserta didik</div>
         <div class="login-field">
           <label>Username</label>
           <input type="text" id="l_user" placeholder="Masukkan username" autocomplete="username"
@@ -329,7 +356,7 @@
         <button class="btn-login" id="btnLogin" onclick="doLogin()">🔐 Masuk</button>
         <div id="loginErr" class="login-err"></div>
         <div class="login-footer-note">
-          <strong>PKBM Sinar Kasih</strong> · Sistem Pendataan TA 2026<br/>
+          <strong>PKBM Sinar Kasih</strong> · Sistem Pendataan<br/>
           Hubungi admin jika lupa password
         </div>
       </div>
@@ -338,7 +365,7 @@
       <div class="login-right-inner">
         <div class="welcome-badge"><div class="badge-dot"></div>🏫 PKBM Sinar Kasih</div>
         <h2 class="welcome-title">Selamat Datang di<br/><span>Sistem Informasi</span><br/>Pendataan Peserta Didik</h2>
-        <p class="welcome-sub">PKBM Sinar Kasih &nbsp;·&nbsp; Tahun Ajaran 2026</p>
+        <p class="welcome-sub">PKBM Sinar Kasih &nbsp;·&nbsp; Sistem Pendataan</p>
         <div class="gedung-card">
           <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7hmbP-O31GOAq-hm7GVSu-9WdqL8_OcFHe7whvWfnbuasHfYPu9FivBhrzuJTzIh2ewGTDENBSuRBLcG9foyL-khffOtlLhy7YIEEsFJAHEdSE2U_IXp-SeUfdnvH9SGNp-saOqJWxDtjeU4rBZJPcwhITLksQIACc9cIn_OKd56D9HBabSH-sgif1qQU/s1599/gedung-2.jpg" alt="Gedung PKBM Sinar Kasih"/>
           <div class="gedung-card-label">🏢 Gedung PKBM Sinar Kasih</div>
@@ -355,10 +382,10 @@
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMhBmR7d3B9iOwiNb4QWaKVznzguLJYQu6ms0JoBx7kXlH6s9lNaSpX4XrGeaiNUm0gUgiBXZrhB0R-QrcyCrlS9OvXe9jq6h_8hM3IXX29MOYph-Dg6_vFkHvvQoSlKKGg-y9o_HCo2maYl2GxArwZMQ5eRkOcC0iDSQRJUJeMI1W12YvXAZS2HOPQEiS/s219/Logo%20PKBM%20SINAR%20KASIH.png" alt="Logo PKBM"/>
     </div>
     <div>
-      <h1>SISTEM PENDATAAN PESERTA TAHUN 2026 – PKBM SINAR KASIH</h1>
-      <p>Sistem Input Data Peserta Program Paket A, B, C · KF Dasar · KUM</p>
+      <h1>SISTEM PENDATAAN PESERTA – PKBM SINAR KASIH</h1>
+      <p>Program Paket A, B, C · KF Dasar · KUM · Kursus Pelatihan</p>
     </div>
-    <div class="header-badge">TA 2026</div>
+    <div class="header-badge" id="headerTahun">PKBM</div>
     <div id="sheetInfo" style="font-size:.7rem;color:var(--gold-lt);margin-left:8px;opacity:.8;">📋 –</div>
     <div class="user-info">
       <div class="user-avatar" id="userAvatar">A</div>
@@ -408,7 +435,7 @@
 
           <div class="field">
             <label>Nama Lengkap <span class="req">*</span></label>
-            <input type="text" id="f_nama" placeholder="Nama lengkap peserta"/>
+            <input type="text" id="f_nama" placeholder="Nama lengkap peserta" oninput="updateFotoFileName()"/>
           </div>
 
           <div class="field">
@@ -453,6 +480,11 @@
             <input type="text" id="f_ibu" placeholder="Nama ibu kandung"/>
           </div>
 
+          <!-- SEKSI 2: ALAMAT -->
+          <div class="form-section full">
+            <div class="form-section-title">📍 Alamat</div>
+          </div>
+
           <div class="field">
             <label>Kecamatan <span class="req">*</span></label>
             <select id="f_kec" onchange="muatDesa()">
@@ -472,9 +504,20 @@
             <select id="f_desa"><option value="">-- Pilih Kecamatan Dulu --</option></select>
           </div>
 
+          <!-- Alamat Lengkap (baru untuk semua program) -->
+          <div class="field full">
+            <label>Alamat Lengkap <span class="req">*</span> <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(Nama jalan, RT/RW, dusun, dll)</span></label>
+            <textarea id="f_alamat" rows="2" placeholder="Contoh: Dusun Buntu RT 03, Jl. Poros Rantepao km 5"></textarea>
+          </div>
+
+          <!-- SEKSI 3: PROGRAM & AKADEMIK -->
+          <div class="form-section full">
+            <div class="form-section-title">🎓 Program & Akademik</div>
+          </div>
+
           <div class="field">
             <label>Program <span class="req">*</span></label>
-            <select id="f_program">
+            <select id="f_program" onchange="onProgramChange()">
               <option value="">-- Pilih Program --</option>
               <option value="Paket C">Paket C</option>
               <option value="Paket B">Paket B</option>
@@ -485,9 +528,23 @@
             </select>
           </div>
 
-          <!-- SEKSI 2: DATA KONTAK & KELULUSAN (BARU) -->
+          <div class="field">
+            <label>Tahun Lulus / Pendaftaran <span class="req">*</span></label>
+            <select id="f_tahunlulus">
+              <!-- Diisi otomatis oleh JavaScript (dinamis) -->
+            </select>
+          </div>
+
+          <!-- NISN — Hanya muncul untuk Paket B & C -->
+          <div class="field full" id="field_nisn" style="display:none;">
+            <label>NISN (Nomor Induk Siswa Nasional) <span class="req">*</span> <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">— Khusus Paket B & C</span></label>
+            <input type="text" id="f_nisn" placeholder="10 digit NISN" maxlength="10" autocomplete="off"/>
+            <div class="nisn-info">📌 NISN wajib diisi untuk pendaftar Paket B dan Paket C. Cek NISN di: nisn.data.kemdikbud.go.id</div>
+          </div>
+
+          <!-- SEKSI 4: KONTAK -->
           <div class="form-section full">
-            <div class="form-section-title">📱 Kontak & Kelulusan</div>
+            <div class="form-section-title">📱 Kontak</div>
           </div>
 
           <div class="field">
@@ -500,32 +557,18 @@
             <input type="email" id="f_email" placeholder="Contoh: nama@email.com"/>
           </div>
 
-          <div class="field">
-            <label>Tahun Lulus <span class="req">*</span></label>
-            <select id="f_tahunlulus">
-              <option value="">-- Pilih Tahun Lulus --</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="Belum Lulus">Belum Lulus</option>
-            </select>
-          </div>
-
-          <!-- SEKSI 3: FOTO (BARU) -->
+          <!-- SEKSI 5: FOTO -->
           <div class="form-section full">
             <div class="form-section-title">📷 Foto Peserta</div>
           </div>
 
           <div class="field full">
-            <label>Upload Foto Peserta <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(Maks. 2MB · JPG/PNG)</span></label>
+            <label>Upload Foto Peserta <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(Maks. 3MB · JPG/PNG)</span></label>
+            <div class="foto-upload-spec">
+              📐 <strong>Ukuran yang diterima:</strong> Foto 4×6 atau 3×4 · Latar belakang polos (merah/biru/putih) ·
+              Format JPG/PNG · Nama file akan otomatis disesuaikan dengan nama peserta
+            </div>
+            <div style="margin-top:10px;">
             <div class="foto-upload-area" id="fotoUploadArea"
                  ondragover="event.preventDefault();this.classList.add('dragover')"
                  ondragleave="this.classList.remove('dragover')"
@@ -535,14 +578,16 @@
                 <div class="foto-upload-icon">📷</div>
                 <div class="foto-upload-text">
                   <strong>Klik atau seret foto ke sini</strong>
-                  Format: JPG, PNG, WEBP · Maks 2MB
+                  Format: JPG, PNG · Latar polos · Ukuran 4×6 atau 3×4 · Maks 3MB
                 </div>
               </div>
               <div class="foto-preview-wrap" id="fotoPreviewWrap">
                 <img src="" alt="Preview" class="foto-preview-img" id="fotoPreviewImg"/>
                 <div class="foto-preview-name" id="fotoPreviewName"></div>
+                <div class="foto-preview-newname" id="fotoPreviewNewName"></div>
                 <button class="foto-remove-btn" onclick="hapusFoto(event)" title="Hapus foto">✕</button>
               </div>
+            </div>
             </div>
             <div class="foto-uploading" id="fotoUploading">
               <div class="mini-spin" style="border-top-color:var(--gold);"></div>
@@ -561,10 +606,13 @@
 
     <!-- ═══ PANEL DATA ═══ -->
     <div class="panel" id="panel-data">
+      <!-- Header khusus cetak / PDF -->
       <div class="print-header">
-        <h2>DATA PESERTA TAHUN 2026 – PKBM SINAR KASIH</h2>
-        <p>Dicetak pada: <span id="printDate"></span></p>
+        <div class="print-instansi">PKBM SINAR KASIH</div>
+        <h2>DATA PESERTA – PKBM SINAR KASIH</h2>
+        <p>Dicetak pada: <span id="printDate"></span> &nbsp;|&nbsp; Program: <span id="printProg">Semua</span></p>
       </div>
+
       <div class="stats no-print">
         <div class="stat"><div class="n" id="sTotal">–</div><div class="l">Total Peserta</div></div>
         <div class="stat g"><div class="n" id="sL">–</div><div class="l">Laki-laki</div></div>
@@ -572,8 +620,9 @@
         <div class="stat r"><div class="n" id="sAvg">–</div><div class="l">Rata-rata Umur</div></div>
         <div class="stat b"><div class="n" id="sProg">–</div><div class="l">Jenis Program</div></div>
       </div>
+
       <div class="toolbar no-print">
-        <input type="text" id="cari" placeholder="🔍 Cari nama, NIK, program, HP, email…" oninput="filterTabel()"/>
+        <input type="text" id="cari" placeholder="🔍 Cari nama, NIK, program, HP…" oninput="filterTabel()"/>
         <select id="filterProg" onchange="filterTabel()">
           <option value="">Semua Program</option>
           <option value="Paket C">Paket C</option>
@@ -583,31 +632,46 @@
           <option value="KUM">KUM</option>
           <option value="Kursus Pelatihan">Kursus Pelatihan</option>
         </select>
+        <!-- ✅ FIX: Filter tahun dinamis -->
+        <div class="year-selector">
+          <label>Tahun:</label>
+          <select id="filterTahun" onchange="filterTabel()">
+            <option value="">Semua Tahun</option>
+          </select>
+        </div>
         <button class="btn btn-primary btn-sm" onclick="muatData()">🔄 Refresh</button>
         <button class="btn btn-success btn-sm" onclick="showPanel('input')">+ Tambah</button>
-        <button class="btn btn-info btn-sm" onclick="cetakPDF()">🖨️ Cetak PDF</button>
+        <button class="btn btn-info btn-sm" onclick="cetakPDF()">🖨️ Cetak / PDF</button>
       </div>
-      <div class="table-wrap">
-        <table id="tabelData">
-          <thead>
-            <tr><th colspan="18">DATA PESERTA TAHUN 2026 – PKBM SINAR KASIH</th></tr>
-            <tr>
-              <th>No</th><th>Foto</th><th>Nama Lengkap</th><th>NIK</th><th>No. KK</th>
-              <th>JK</th><th>Tempat Lahir</th><th>Tgl Lahir</th><th>Umur</th>
-              <th>Ibu Kandung</th><th>Agama</th><th colspan="2">Alamat</th>
-              <th>Program</th><th>No. HP</th><th>Email</th><th>Thn Lulus</th>
-              <th>User Input</th><th class="no-print">Aksi</th>
-            </tr>
-            <tr>
-              <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
-              <th></th><th></th><th>Kecamatan</th><th>Desa/Kelurahan</th>
-              <th></th><th></th><th></th><th></th><th></th><th class="no-print"></th>
-            </tr>
-          </thead>
-          <tbody id="tBody">
-            <tr><td colspan="19" style="text-align:center;padding:32px;color:var(--muted);">Klik <strong>Refresh</strong> untuk memuat data.</td></tr>
-          </tbody>
-        </table>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="table-wrap">
+          <table id="tabelData">
+            <thead>
+              <tr><th colspan="20" id="thJudul">DATA PESERTA – PKBM SINAR KASIH</th></tr>
+              <tr>
+                <th>No</th><th>Foto</th><th>Nama Lengkap</th><th>NIK</th><th>No. KK</th>
+                <th>JK</th><th>Tempat Lahir</th><th>Tgl Lahir</th><th>Umur</th>
+                <th>Ibu Kandung</th><th>Agama</th><th colspan="2">Alamat</th>
+                <th>Program</th><th>No. HP</th><th>Thn</th>
+                <th>NISN</th><th>Alamat Lengkap</th><th>User Input</th><th class="no-print">Aksi</th>
+              </tr>
+              <tr>
+                <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                <th></th><th></th><th>Kecamatan</th><th>Desa/Kelurahan</th>
+                <th></th><th></th><th></th><th></th><th></th><th></th><th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody id="tBody">
+              <tr><td colspan="20" style="text-align:center;padding:32px;color:var(--muted);">Klik <strong>Refresh</strong> untuk memuat data.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer cetak -->
+      <div class="print-footer">
+        <strong>PKBM Sinar Kasih</strong> &nbsp;·&nbsp; Dokumen dicetak otomatis dari Sistem Pendataan
       </div>
     </div>
 
@@ -724,36 +788,78 @@ var hapusUserRow  = null;
 var nikDuplikat   = false;
 var nikDebounce   = null;
 var editUserRow   = null;
-var fotoBase64    = null;   // base64 foto yang dipilih
+var fotoBase64    = null;
 var fotoMimeType  = null;
-var fotoFileName  = null;
-var fotoUrl       = null;   // URL setelah upload ke Drive
+var fotoFileName  = null;  // nama file asli
+var fotoFileExt   = 'jpg'; // ekstensi file
+var fotoUrl       = null;
 
 // ═══════════════════════════════════════
-//  API CALL — Ganti google.script.run dengan fetch
+//  ✅ FIX: TAHUN LULUS DINAMIS
+//  Isi otomatis dari tahun sekarang mundur ke 1990
 // ═══════════════════════════════════════
-async function apiCall(action, params) {
-  var body = Object.assign({ action: action }, params);
-  var response = await fetch(GAS_URL, {
-    method : 'POST',
-    mode   : 'no-cors',   // Google Apps Script perlu no-cors dari domain lain
-    headers: { 'Content-Type': 'text/plain' },
-    body   : JSON.stringify(body)
-  });
+function isiOpsiTahun() {
+  var sel  = document.getElementById('f_tahunlulus');
+  var now  = new Date().getFullYear();
+  sel.innerHTML = '<option value="">-- Pilih Tahun Lulus --</option>';
+  // Tambah tahun dari sekarang sampai 1990
+  for (var y = now; y >= 1990; y--) {
+    var opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    sel.appendChild(opt);
+  }
+  var optBelum = document.createElement('option');
+  optBelum.value = 'Belum Lulus'; optBelum.textContent = 'Belum Lulus';
+  sel.appendChild(optBelum);
 
-  // Catatan: mode no-cors membuat response.json() tidak bisa dibaca langsung.
-  // Solusi: gunakan mode cors dengan header yang benar di GAS, atau gunakan
-  // teknik redirect via form. Untuk kemudahan, kita gunakan pendekatan JSONP-like
-  // atau mode cors jika GAS dikonfigurasi dengan benar.
-  // 
-  // Untuk Google Apps Script, cara paling andal adalah deploy dengan mode:
-  // "Execute as: Me" + "Who has access: Anyone" + tambahkan header CORS di doPost
-  // ATAU gunakan teknik fetch dengan redirect:
-  var text = await response.text();
-  return JSON.parse(text);
+  // Isi filter tahun di panel data juga
+  var selFilter = document.getElementById('filterTahun');
+  selFilter.innerHTML = '<option value="">Semua Tahun</option>';
+  for (var y2 = now; y2 >= 1990; y2--) {
+    var opt2 = document.createElement('option');
+    opt2.value = y2; opt2.textContent = y2;
+    selFilter.appendChild(opt2);
+  }
 }
 
-// Alternatif: fungsi dengan cors handling yang lebih baik
+// ═══════════════════════════════════════
+//  ✅ FIX: TAMPILKAN/SEMBUNYIKAN NISN SESUAI PROGRAM
+// ═══════════════════════════════════════
+function onProgramChange() {
+  var prog    = document.getElementById('f_program').value;
+  var nisnDiv = document.getElementById('field_nisn');
+  var nisnInp = document.getElementById('f_nisn');
+  if (prog === 'Paket B' || prog === 'Paket C') {
+    nisnDiv.style.display = 'block';
+  } else {
+    nisnDiv.style.display = 'none';
+    nisnInp.value = '';
+  }
+}
+
+// ═══════════════════════════════════════
+//  ✅ FIX: UPDATE NAMA FILE FOTO OTOMATIS DARI NAMA PESERTA
+// ═══════════════════════════════════════
+function sanitasiNamaFile(nama) {
+  // Ubah ke huruf kecil, ganti spasi dengan underscore, hapus karakter non-alfanumerik
+  return nama.toLowerCase()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9_]/g, '')
+    .substring(0, 50); // maks 50 karakter
+}
+
+function updateFotoFileName() {
+  var nama = document.getElementById('f_nama').value.trim();
+  if (!fotoBase64 || !nama) return;
+  var namaBersih  = sanitasiNamaFile(nama);
+  var namaFileBaru = 'foto_' + namaBersih + '.' + fotoFileExt;
+  fotoFileName    = namaFileBaru;
+  document.getElementById('fotoPreviewNewName').textContent = '📁 Nama file: ' + namaFileBaru;
+}
+
+// ═══════════════════════════════════════
+//  API CALL
+// ═══════════════════════════════════════
 async function api(action, params) {
   try {
     var body = Object.assign({ action: action }, params || {});
@@ -775,6 +881,7 @@ async function api(action, params) {
 //  LOGIN / SESSION
 // ═══════════════════════════════════════
 function initApp() {
+  isiOpsiTahun(); // ✅ FIX: Isi tahun dinamis saat load
   var saved = sessionStorage.getItem('kf_token');
   if (saved) {
     api('cekSession', { token: saved })
@@ -873,25 +980,48 @@ function showPanel(id) {
 }
 
 // ═══════════════════════════════════════
-//  FOTO HANDLING
+//  ✅ FIX: FOTO HANDLING dengan nama file otomatis
 // ═══════════════════════════════════════
 function handleFotoChange(input) {
   var file = input.files[0];
   if (!file) return;
-  if (file.size > 2 * 1024 * 1024) {
-    toast('❌ Ukuran foto maksimal 2MB', 'err'); input.value = ''; return;
+
+  // Cek ukuran maks 3MB
+  if (file.size > 3 * 1024 * 1024) {
+    toast('❌ Ukuran foto maksimal 3MB', 'err'); input.value = ''; return;
   }
+
+  // Cek tipe file
+  if (!file.type.match(/image\/(jpeg|png|webp)/)) {
+    toast('❌ Hanya file JPG, PNG, atau WEBP yang diperbolehkan', 'err'); input.value = ''; return;
+  }
+
   var reader = new FileReader();
   reader.onload = function(e) {
-    var result    = e.target.result;
-    var base64    = result.split(',')[1];
-    fotoBase64    = base64;
-    fotoMimeType  = file.type;
-    fotoFileName  = file.name;
-    fotoUrl       = null; // reset URL lama
+    var result   = e.target.result;
+    var base64   = result.split(',')[1];
+    fotoBase64   = base64;
+    fotoMimeType = file.type;
+
+    // Ambil ekstensi dari file asli
+    var parts    = file.name.split('.');
+    fotoFileExt  = parts.length > 1 ? parts[parts.length-1].toLowerCase() : 'jpg';
+    if (fotoFileExt === 'jpeg') fotoFileExt = 'jpg';
+
+    // ✅ FIX: Nama file otomatis dari nama peserta
+    var nama     = document.getElementById('f_nama').value.trim();
+    if (nama) {
+      var namaBersih = sanitasiNamaFile(nama);
+      fotoFileName   = 'foto_' + namaBersih + '.' + fotoFileExt;
+    } else {
+      fotoFileName = file.name; // fallback ke nama asli jika nama belum diisi
+    }
+
+    fotoUrl = null;
 
     document.getElementById('fotoPreviewImg').src  = result;
-    document.getElementById('fotoPreviewName').textContent = file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+    document.getElementById('fotoPreviewName').textContent = '📎 File asli: ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+    document.getElementById('fotoPreviewNewName').textContent = '📁 Akan disimpan sebagai: ' + fotoFileName;
     document.getElementById('fotoPlaceholder').style.display  = 'none';
     document.getElementById('fotoPreviewWrap').style.display  = 'block';
     document.getElementById('fotoUrlDisplay').style.display   = 'none';
@@ -913,7 +1043,7 @@ function handleFotoDrop(e) {
 
 function hapusFoto(e) {
   e.stopPropagation();
-  fotoBase64 = null; fotoMimeType = null; fotoFileName = null; fotoUrl = null;
+  fotoBase64 = null; fotoMimeType = null; fotoFileName = null; fotoFileExt = 'jpg'; fotoUrl = null;
   document.getElementById('f_foto').value = '';
   document.getElementById('fotoPlaceholder').style.display = 'block';
   document.getElementById('fotoPreviewWrap').style.display = 'none';
@@ -922,6 +1052,14 @@ function hapusFoto(e) {
 
 async function uploadFotoKeServer() {
   if (!fotoBase64 || !fotoFileName) return null;
+
+  // Pastikan nama file sudah menggunakan nama peserta terbaru
+  var nama = document.getElementById('f_nama').value.trim();
+  if (nama) {
+    var namaBersih = sanitasiNamaFile(nama);
+    fotoFileName   = 'foto_' + namaBersih + '.' + fotoFileExt;
+  }
+
   document.getElementById('fotoUploading').style.display = 'flex';
   try {
     var res = await api('uploadFoto', {
@@ -934,6 +1072,7 @@ async function uploadFotoKeServer() {
     if (res.success) {
       fotoUrl = res.fileUrl;
       document.getElementById('fotoUrlDisplay').style.display = 'block';
+      document.getElementById('fotoUrlDisplay').textContent = '✅ Foto "' + fotoFileName + '" berhasil diupload ke Google Drive';
       return res.fileUrl;
     } else {
       toast('⚠️ Upload foto gagal: ' + res.message, 'err');
@@ -941,7 +1080,7 @@ async function uploadFotoKeServer() {
     }
   } catch(err) {
     document.getElementById('fotoUploading').style.display = 'none';
-    toast('⚠️ Upload foto gagal', 'err');
+    toast('⚠️ Upload foto gagal: ' + err.message, 'err');
     return null;
   }
 }
@@ -960,8 +1099,9 @@ function autoUmur() {
 }
 
 function resetForm() {
-  ['f_nama','f_nik','f_kk','f_tl','f_ttl','f_umur','f_ibu','f_hp','f_email'].forEach(function(id){
-    document.getElementById(id).value = '';
+  ['f_nama','f_nik','f_kk','f_tl','f_ttl','f_umur','f_ibu','f_hp','f_email','f_nisn','f_alamat'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.value = '';
   });
   document.getElementById('f_agama').value      = '';
   document.getElementById('f_program').value    = '';
@@ -969,6 +1109,7 @@ function resetForm() {
   document.getElementById('f_tahunlulus').value = '';
   document.getElementById('f_desa').innerHTML   = '<option value="">-- Pilih Kecamatan Dulu --</option>';
   document.querySelectorAll('input[name="jk"]').forEach(function(r){ r.checked = false; });
+  document.getElementById('field_nisn').style.display = 'none';
   hapusFoto({ stopPropagation: function(){} });
   resetNikStatus();
 }
@@ -1034,16 +1175,24 @@ async function simpanForm() {
   var hp      = document.getElementById('f_hp').value.trim();
   var email   = document.getElementById('f_email').value.trim();
   var thnLls  = document.getElementById('f_tahunlulus').value;
+  var nisn    = document.getElementById('f_nisn').value.trim();
+  var alamat  = document.getElementById('f_alamat').value.trim();
 
-  if (!program) { toast('⚠️ Silakan pilih Program terlebih dahulu','err'); document.getElementById('f_program').focus(); return; }
-  if (!thnLls)  { toast('⚠️ Silakan pilih Tahun Lulus','err'); document.getElementById('f_tahunlulus').focus(); return; }
+  if (!program) { toast('⚠️ Pilih Program terlebih dahulu','err'); document.getElementById('f_program').focus(); return; }
+  if (!thnLls)  { toast('⚠️ Pilih Tahun Lulus','err'); document.getElementById('f_tahunlulus').focus(); return; }
   if (!nama||!nik||!kk||!jkEl||!tl||!ttl||!agama||!kec||!desa) { toast('⚠️ Lengkapi semua field wajib (*)','err'); return; }
+  if (!alamat)  { toast('⚠️ Alamat Lengkap wajib diisi','err'); document.getElementById('f_alamat').focus(); return; }
   if (nikDuplikat) { toast('❌ NIK sudah terdaftar!','err'); document.getElementById('f_nik').focus(); return; }
+
+  // Validasi NISN untuk Paket B & C
+  if ((program === 'Paket B' || program === 'Paket C') && !nisn) {
+    toast('⚠️ NISN wajib diisi untuk ' + program,'err');
+    document.getElementById('f_nisn').focus(); return;
+  }
 
   setLoading(true, 'Memproses data…');
   document.getElementById('btnSimpan').disabled = true;
 
-  // Upload foto dulu jika ada
   var urlFoto = null;
   if (fotoBase64) {
     setLoading(true, 'Mengupload foto ke Google Drive…');
@@ -1057,7 +1206,9 @@ async function simpanForm() {
     tanggalLahir: ttl, ibuKandung: document.getElementById('f_ibu').value.trim(),
     agama: agama, kecamatan: kec, desa: desa, program: program,
     noHp: hp, email: email, tahunLulus: thnLls,
-    fotoUrl: urlFoto || ''
+    fotoUrl: urlFoto || '',
+    nisn: nisn || '',
+    alamatLengkap: alamat || ''
   };
 
   api('simpanData', { token: SESSION_TOKEN, formData: formData })
@@ -1123,7 +1274,7 @@ function badgeProgram(prog) {
 function renderTabel(data) {
   var tb = document.getElementById('tBody');
   if (!data.length) {
-    tb.innerHTML = '<tr><td colspan="19" style="text-align:center;padding:28px;color:var(--muted);">Tidak ada data.</td></tr>';
+    tb.innerHTML = '<tr><td colspan="20" style="text-align:center;padding:28px;color:var(--muted);">Tidak ada data.</td></tr>';
     return;
   }
   tb.innerHTML = data.map(function(r) {
@@ -1146,8 +1297,9 @@ function renderTabel(data) {
       + '<td>' + r.desa + '</td>'
       + '<td class="td-center">' + badgeProgram(r.program) + '</td>'
       + '<td class="td-hp">' + (r.noHp||'-') + '</td>'
-      + '<td class="td-email">' + (r.email||'-') + '</td>'
       + '<td class="td-center" style="font-weight:700;color:var(--gold-lt);">' + (r.tahunLulus||'-') + '</td>'
+      + '<td class="td-nik">' + (r.nisn||'-') + '</td>'
+      + '<td style="font-size:.72rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + (r.alamatLengkap||'') + '">' + (r.alamatLengkap||'-') + '</td>'
       + '<td class="td-user">' + (r.userInput||'-') + '</td>'
       + '<td class="td-act no-print"><button class="btn btn-danger btn-sm" onclick="mintaHapus(' + r.rowIndex + ',\'' + r.nama.replace(/'/g,"\\'") + '\')">🗑</button></td>'
       + '</tr>';
@@ -1161,8 +1313,9 @@ function lihatFoto(url, nama) {
 }
 
 function filterTabel() {
-  var q    = document.getElementById('cari').value.toLowerCase();
-  var prog = document.getElementById('filterProg').value;
+  var q     = document.getElementById('cari').value.toLowerCase();
+  var prog  = document.getElementById('filterProg').value;
+  var tahun = document.getElementById('filterTahun').value;
   var filtered = allData.filter(function(r) {
     var match = (r.nama||'').toLowerCase().includes(q)
       || (r.nik||'').toLowerCase().includes(q)
@@ -1171,18 +1324,35 @@ function filterTabel() {
       || (r.program||'').toLowerCase().includes(q)
       || (r.userInput||'').toLowerCase().includes(q)
       || (r.noHp||'').toLowerCase().includes(q)
-      || (r.email||'').toLowerCase().includes(q);
-    if (prog) match = match && r.program === prog;
+      || (r.nisn||'').toLowerCase().includes(q);
+    if (prog)  match = match && r.program === prog;
+    if (tahun) match = match && String(r.tahunLulus) === String(tahun);
     return match;
   });
   renderTabel(filtered);
 }
 
+// ═══════════════════════════════════════
+//  ✅ FIX: CETAK PDF RAPI
+// ═══════════════════════════════════════
 function cetakPDF() {
-  document.getElementById('printDate').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  window.print();
+  var prog  = document.getElementById('filterProg').value || 'Semua Program';
+  var tahun = document.getElementById('filterTahun').value || 'Semua Tahun';
+
+  // Update judul di header cetak
+  var now = new Date();
+  var tglStr = now.toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('printDate').textContent = tglStr;
+  document.getElementById('printProg').textContent = prog + (tahun !== 'Semua Tahun' ? ' · ' + tahun : '');
+  document.getElementById('thJudul').textContent   = 'DATA PESERTA – PKBM SINAR KASIH · ' + prog + (tahun !== 'Semua Tahun' ? ' · ' + tahun : '');
+
+  // Beri waktu render lalu print (browser akan buat PDF via Ctrl+P atau dialog)
+  setTimeout(function(){ window.print(); }, 200);
 }
 
+// ═══════════════════════════════════════
+//  HAPUS DATA
+// ═══════════════════════════════════════
 function mintaHapus(rowIdx, nama) {
   hapusRow = rowIdx;
   document.getElementById('modalMsg').textContent = 'Data "' + nama + '" akan dihapus permanen. Yakin?';
@@ -1202,35 +1372,34 @@ function konfirmasiHapus() {
 }
 
 // ═══════════════════════════════════════
-//  MANAJEMEN USER
+//  KELOLA USER
 // ═══════════════════════════════════════
 function muatDaftarUser() {
-  setLoading(true, 'Memuat daftar user…');
   api('ambilDaftarUser', { token: SESSION_TOKEN })
     .then(function(res) {
-      setLoading(false);
       if (!res.success) { toast('❌ ' + res.message, 'err'); return; }
-      allUsers = res.data; renderUserTable(allUsers);
+      allUsers = res.data;
+      renderDaftarUser(allUsers);
     })
-    .catch(function(err){ setLoading(false); toast('❌ ' + err.message, 'err'); });
+    .catch(function(err){ toast('❌ ' + err.message, 'err'); });
 }
 
-function renderUserTable(data) {
+function renderDaftarUser(data) {
   var tb = document.getElementById('userTBody');
   if (!data.length) {
-    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);">Tidak ada user.</td></tr>';
+    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--muted);">Belum ada data user.</td></tr>';
     return;
   }
   tb.innerHTML = data.map(function(u, i) {
     return '<tr>'
-      + '<td style="color:var(--muted);text-align:center;font-weight:700;">' + (i+1) + '</td>'
-      + '<td><code style="background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:.82rem;color:var(--gold-lt);">' + u.username + '</code></td>'
-      + '<td><strong>' + u.nama + '</strong></td>'
+      + '<td style="text-align:center;font-weight:700;color:var(--gold);">' + (i+1) + '</td>'
+      + '<td><strong>' + u.username + '</strong></td>'
+      + '<td>' + u.nama + '</td>'
       + '<td><span class="role-badge ' + (u.role==='admin'?'role-admin':'role-user') + '">' + (u.role==='admin'?'👑 Admin':'👤 User') + '</span></td>'
-      + '<td style="font-size:.78rem;color:var(--muted);">' + (u.lastLogin||'-') + '</td>'
+      + '<td style="font-size:.75rem;color:var(--muted);">' + (u.lastLogin||'-') + '</td>'
       + '<td><div class="user-actions" style="justify-content:center;">'
-      + '<button class="btn btn-warning btn-sm" onclick="bukaModalEditUser(' + u.rowIndex + ',\'' + u.username + '\',\'' + u.nama + '\',\'' + u.role + '\')">✏️ Edit</button>'
-      + '<button class="btn btn-danger btn-sm" onclick="mintaHapusUser(' + u.rowIndex + ',\'' + u.nama + '\')">🗑</button>'
+        + '<button class="btn btn-primary btn-sm" onclick="bukaModalEditUser(' + u.rowIndex + ',\'' + u.username + '\',\'' + u.nama.replace(/'/g,"\\'") + '\',\'' + u.role + '\')">✏️ Edit</button>'
+        + '<button class="btn btn-danger btn-sm" onclick="mintaHapusUser(' + u.rowIndex + ',\'' + u.nama.replace(/'/g,"\\'") + '\')">🗑</button>'
       + '</div></td>'
       + '</tr>';
   }).join('');
@@ -1238,34 +1407,35 @@ function renderUserTable(data) {
 
 function filterUser() {
   var q = document.getElementById('cariUser').value.toLowerCase();
-  renderUserTable(allUsers.filter(function(u){
-    return (u.username||'').toLowerCase().includes(q) || (u.nama||'').toLowerCase().includes(q);
-  }));
+  var filtered = allUsers.filter(function(u){
+    return u.username.toLowerCase().includes(q) || u.nama.toLowerCase().includes(q);
+  });
+  renderDaftarUser(filtered);
 }
 
 function bukaModalTambahUser() {
   editUserRow = null;
   document.getElementById('modalUserTitle').textContent = '➕ Tambah User Baru';
-  document.getElementById('modalUserDesc').textContent  = 'Isi data akun pengguna baru.';
-  document.getElementById('mu_username').value  = '';
-  document.getElementById('mu_nama').value      = '';
+  document.getElementById('modalUserDesc').textContent  = 'Isi data akun pengguna baru di bawah ini.';
+  document.getElementById('mu_username').value   = '';
+  document.getElementById('mu_nama').value       = '';
   document.getElementById('mu_password').value  = '';
-  document.getElementById('mu_role').value      = 'user';
-  document.getElementById('mu_passLabel').innerHTML    = 'Password <span class="req">*</span>';
-  document.getElementById('mu_passHint').style.display = 'none';
-  document.getElementById('mu_username').disabled      = false;
-  document.getElementById('modalUserErr').style.display= 'none';
+  document.getElementById('mu_role').value       = 'user';
+  document.getElementById('mu_passLabel').innerHTML     = 'Password <span class="req">*</span>';
+  document.getElementById('mu_passHint').style.display  = 'none';
+  document.getElementById('mu_username').disabled       = false;
+  document.getElementById('modalUserErr').style.display = 'none';
   document.getElementById('modalUser').classList.add('on');
 }
 
 function bukaModalEditUser(rowIndex, username, nama, role) {
   editUserRow = rowIndex;
   document.getElementById('modalUserTitle').textContent = '✏️ Edit User';
-  document.getElementById('modalUserDesc').textContent  = 'Ubah data akun. Kosongkan password untuk tidak mengubahnya.';
-  document.getElementById('mu_username').value  = username;
-  document.getElementById('mu_nama').value      = nama;
+  document.getElementById('modalUserDesc').textContent  = 'Ubah data akun pengguna.';
+  document.getElementById('mu_username').value   = username;
+  document.getElementById('mu_nama').value       = nama;
   document.getElementById('mu_password').value  = '';
-  document.getElementById('mu_role').value      = role;
+  document.getElementById('mu_role').value       = role;
   document.getElementById('mu_passLabel').innerHTML    = 'Password Baru';
   document.getElementById('mu_passHint').style.display = 'block';
   document.getElementById('mu_username').disabled      = true;
