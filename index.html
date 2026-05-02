@@ -323,7 +323,7 @@
 ═══════════════════════════════════════ -->
 <script>
   // 🔴 WAJIB DIISI: Ganti dengan URL deployment Google Apps Script Anda
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbxPOCZ_niRdsb31pQyZ-7Min7JDNXMR1Tl4cMe0WHSc6q2tabYoSxDg9RZYOqoxV2EB/exec';
+  var GAS_URL = 'https://script.google.com/macros/s/GANTI_DENGAN_URL_DEPLOYMENT_ANDA/exec';
 </script>
 
 <!-- LOGIN -->
@@ -486,22 +486,41 @@
           </div>
 
           <div class="field">
+            <label>Provinsi <span class="req">*</span></label>
+            <div style="position:relative;">
+              <select id="f_provinsi" onchange="muatKabupaten()">
+                <option value="">-- Pilih Provinsi --</option>
+              </select>
+              <div id="loadProvinsi" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);"><div class="mini-spin" style="border-top-color:var(--gold);"></div></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Kabupaten / Kota <span class="req">*</span></label>
+            <div style="position:relative;">
+              <select id="f_kabupaten" onchange="muatKecamatan()" disabled>
+                <option value="">-- Pilih Provinsi Dulu --</option>
+              </select>
+              <div id="loadKabupaten" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);"><div class="mini-spin" style="border-top-color:var(--gold);"></div></div>
+            </div>
+          </div>
+
+          <div class="field">
             <label>Kecamatan <span class="req">*</span></label>
-            <select id="f_kec" onchange="muatDesa()">
-              <option value="">-- Pilih Kecamatan --</option>
-              <option>AWAN RANTE KARUA</option><option>BALUSU</option><option>BANGKELEKILA</option>
-              <option>BARUPPU</option><option>BUNTAO</option><option>BUNTU PEPASAN</option>
-              <option>DENDE' PIONGAN NAPO</option><option>KAPALA PITU</option><option>KESU</option>
-              <option>NANGGALA</option><option>RANTEBUA</option><option>RANTEPAO</option>
-              <option>RINDINGALLO</option><option>SA'DAN</option><option>SANGGALANGI</option>
-              <option>SESEAN</option><option>SESEAN SULOARA'</option><option>SOPAI</option>
-              <option>TALLUNGLIPU</option><option>TIKALA</option><option>TONDON</option>
-            </select>
+            <div style="position:relative;">
+              <select id="f_kec" onchange="muatDesa()" disabled>
+                <option value="">-- Pilih Kabupaten Dulu --</option>
+              </select>
+              <div id="loadKecamatan" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);"><div class="mini-spin" style="border-top-color:var(--gold);"></div></div>
+            </div>
           </div>
 
           <div class="field">
             <label>Desa / Kelurahan <span class="req">*</span></label>
-            <select id="f_desa"><option value="">-- Pilih Kecamatan Dulu --</option></select>
+            <div style="position:relative;">
+              <select id="f_desa" disabled><option value="">-- Pilih Kecamatan Dulu --</option></select>
+              <div id="loadDesa" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);"><div class="mini-spin" style="border-top-color:var(--gold);"></div></div>
+            </div>
           </div>
 
           <!-- Alamat Lengkap (baru untuk semua program) -->
@@ -648,17 +667,17 @@
         <div class="table-wrap">
           <table id="tabelData">
             <thead>
-              <tr><th colspan="20" id="thJudul">DATA PESERTA – PKBM SINAR KASIH</th></tr>
+              <tr><th colspan="22" id="thJudul">DATA PESERTA – PKBM SINAR KASIH</th></tr>
               <tr>
                 <th>No</th><th>Foto</th><th>Nama Lengkap</th><th>NIK</th><th>No. KK</th>
                 <th>JK</th><th>Tempat Lahir</th><th>Tgl Lahir</th><th>Umur</th>
-                <th>Ibu Kandung</th><th>Agama</th><th colspan="2">Alamat</th>
+                <th>Ibu Kandung</th><th>Agama</th><th colspan="4">Alamat Wilayah</th>
                 <th>Program</th><th>No. HP</th><th>Thn</th>
                 <th>NISN</th><th>Alamat Lengkap</th><th>User Input</th><th class="no-print">Aksi</th>
               </tr>
               <tr>
                 <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
-                <th></th><th></th><th>Kecamatan</th><th>Desa/Kelurahan</th>
+                <th></th><th></th><th>Provinsi</th><th>Kabupaten/Kota</th><th>Kecamatan</th><th>Desa/Kelurahan</th>
                 <th></th><th></th><th></th><th></th><th></th><th></th><th class="no-print"></th>
               </tr>
             </thead>
@@ -882,6 +901,7 @@ async function api(action, params) {
 // ═══════════════════════════════════════
 function initApp() {
   isiOpsiTahun(); // ✅ FIX: Isi tahun dinamis saat load
+  muatProvinsi(); // ✅ Muat data provinsi dari API wilayah Indonesia
   var saved = sessionStorage.getItem('kf_token');
   if (saved) {
     api('cekSession', { token: saved })
@@ -1105,9 +1125,18 @@ function resetForm() {
   });
   document.getElementById('f_agama').value      = '';
   document.getElementById('f_program').value    = '';
-  document.getElementById('f_kec').value        = '';
   document.getElementById('f_tahunlulus').value = '';
-  document.getElementById('f_desa').innerHTML   = '<option value="">-- Pilih Kecamatan Dulu --</option>';
+  // Reset wilayah
+  document.getElementById('f_provinsi').value   = '';
+  var kabEl = document.getElementById('f_kabupaten');
+  kabEl.innerHTML = '<option value="">-- Pilih Provinsi Dulu --</option>';
+  kabEl.disabled  = true;
+  var kecEl = document.getElementById('f_kec');
+  kecEl.innerHTML = '<option value="">-- Pilih Kabupaten Dulu --</option>';
+  kecEl.disabled  = true;
+  var desaEl = document.getElementById('f_desa');
+  desaEl.innerHTML = '<option value="">-- Pilih Kecamatan Dulu --</option>';
+  desaEl.disabled  = true;
   document.querySelectorAll('input[name="jk"]').forEach(function(r){ r.checked = false; });
   document.getElementById('field_nisn').style.display = 'none';
   hapusFoto({ stopPropagation: function(){} });
@@ -1169,6 +1198,8 @@ async function simpanForm() {
   var tl      = document.getElementById('f_tl').value.trim();
   var ttl     = document.getElementById('f_ttl').value;
   var agama   = document.getElementById('f_agama').value;
+  var prov    = document.getElementById('f_provinsi').options[document.getElementById('f_provinsi').selectedIndex];
+  var kab     = document.getElementById('f_kabupaten').options[document.getElementById('f_kabupaten').selectedIndex];
   var kec     = document.getElementById('f_kec').value.trim().toUpperCase();
   var desa    = document.getElementById('f_desa').value.trim().toUpperCase();
   var program = document.getElementById('f_program').value;
@@ -1180,7 +1211,11 @@ async function simpanForm() {
 
   if (!program) { toast('⚠️ Pilih Program terlebih dahulu','err'); document.getElementById('f_program').focus(); return; }
   if (!thnLls)  { toast('⚠️ Pilih Tahun Lulus','err'); document.getElementById('f_tahunlulus').focus(); return; }
-  if (!nama||!nik||!kk||!jkEl||!tl||!ttl||!agama||!kec||!desa) { toast('⚠️ Lengkapi semua field wajib (*)','err'); return; }
+  if (!nama||!nik||!kk||!jkEl||!tl||!ttl||!agama) { toast('⚠️ Lengkapi semua field wajib (*)','err'); return; }
+  if (!prov || !prov.value) { toast('⚠️ Pilih Provinsi terlebih dahulu','err'); document.getElementById('f_provinsi').focus(); return; }
+  if (!kab || !kab.value)   { toast('⚠️ Pilih Kabupaten/Kota terlebih dahulu','err'); document.getElementById('f_kabupaten').focus(); return; }
+  if (!kec)  { toast('⚠️ Pilih Kecamatan terlebih dahulu','err'); document.getElementById('f_kec').focus(); return; }
+  if (!desa) { toast('⚠️ Pilih Desa/Kelurahan terlebih dahulu','err'); document.getElementById('f_desa').focus(); return; }
   if (!alamat)  { toast('⚠️ Alamat Lengkap wajib diisi','err'); document.getElementById('f_alamat').focus(); return; }
   if (nikDuplikat) { toast('❌ NIK sudah terdaftar!','err'); document.getElementById('f_nik').focus(); return; }
 
@@ -1204,7 +1239,10 @@ async function simpanForm() {
     no: '', namaLengkap: nama, nik: nik, noKK: kk,
     jenisKelamin: jkEl.value, tempatLahir: tl,
     tanggalLahir: ttl, ibuKandung: document.getElementById('f_ibu').value.trim(),
-    agama: agama, kecamatan: kec, desa: desa, program: program,
+    agama: agama,
+    provinsi: prov ? prov.text : '',
+    kabupaten: kab ? kab.text : '',
+    kecamatan: kec, desa: desa, program: program,
     noHp: hp, email: email, tahunLulus: thnLls,
     fotoUrl: urlFoto || '',
     nisn: nisn || '',
@@ -1274,7 +1312,7 @@ function badgeProgram(prog) {
 function renderTabel(data) {
   var tb = document.getElementById('tBody');
   if (!data.length) {
-    tb.innerHTML = '<tr><td colspan="20" style="text-align:center;padding:28px;color:var(--muted);">Tidak ada data.</td></tr>';
+    tb.innerHTML = '<tr><td colspan="22" style="text-align:center;padding:28px;color:var(--muted);">Tidak ada data.</td></tr>';
     return;
   }
   tb.innerHTML = data.map(function(r) {
@@ -1293,8 +1331,10 @@ function renderTabel(data) {
       + '<td class="td-center">' + (r.umur||'-') + '</td>'
       + '<td>' + (r.ibu||'-') + '</td>'
       + '<td class="td-center"><span class="badge ba">' + (r.agama||'-') + '</span></td>'
-      + '<td>' + r.kecamatan + '</td>'
-      + '<td>' + r.desa + '</td>'
+      + '<td style="font-size:.72rem;color:#a5b4fc;">' + (r.provinsi||'-') + '</td>'
+      + '<td style="font-size:.72rem;color:#93c5fd;">' + (r.kabupaten||'-') + '</td>'
+      + '<td>' + (r.kecamatan||'-') + '</td>'
+      + '<td>' + (r.desa||'-') + '</td>'
       + '<td class="td-center">' + badgeProgram(r.program) + '</td>'
       + '<td class="td-hp">' + (r.noHp||'-') + '</td>'
       + '<td class="td-center" style="font-weight:700;color:var(--gold-lt);">' + (r.tahunLulus||'-') + '</td>'
@@ -1319,6 +1359,8 @@ function filterTabel() {
   var filtered = allData.filter(function(r) {
     var match = (r.nama||'').toLowerCase().includes(q)
       || (r.nik||'').toLowerCase().includes(q)
+      || (r.provinsi||'').toLowerCase().includes(q)
+      || (r.kabupaten||'').toLowerCase().includes(q)
       || (r.kecamatan||'').toLowerCase().includes(q)
       || (r.desa||'').toLowerCase().includes(q)
       || (r.program||'').toLowerCase().includes(q)
@@ -1512,8 +1554,12 @@ function toast(msg, type) {
 }
 
 // ═══════════════════════════════════════
-//  DATA KECAMATAN & DESA
+//  WILAYAH INDONESIA — API emsifa
+//  Provinsi → Kabupaten → Kecamatan → Desa
 // ═══════════════════════════════════════
+var WILAYAH_API = 'https://emsifa.github.io/api-wilayah-indonesia/api';
+
+// Fallback data Toraja Utara (offline)
 var dataTorut = {
   'AWAN RANTE KARUA':['AWAN','BATU LOTONG','BUNTU KARUA','LONDONG BIANG'],
   'BALUSU':["AWA' KAWASIK",'BALUSU AO GADING','BALUSU BANGUNLIPU','KARUA',"PALANGI'",'BALUSU','TAGARI'],
@@ -1538,14 +1584,142 @@ var dataTorut = {
   'TONDON':['TONDON',"TONDON LANGI'",'TONDON MATALLO','TONDON SIBATA']
 };
 
-function muatDesa() {
-  var kec     = document.getElementById('f_kec').value;
-  var selDesa = document.getElementById('f_desa');
-  selDesa.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
-  if (!kec || !dataTorut[kec]) return;
-  dataTorut[kec].forEach(function(d){
-    var o = document.createElement('option'); o.value = d; o.textContent = d; selDesa.appendChild(o);
+async function fetchWilayah(url) {
+  try {
+    var res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  } catch(e) {
+    return null;
+  }
+}
+
+function setWilayahLoading(id, on) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = on ? 'block' : 'none';
+}
+
+async function muatProvinsi() {
+  var sel = document.getElementById('f_provinsi');
+  setWilayahLoading('loadProvinsi', true);
+  var data = await fetchWilayah(WILAYAH_API + '/provinces.json');
+  setWilayahLoading('loadProvinsi', false);
+  if (!data) {
+    toast('⚠️ Gagal memuat data provinsi. Periksa koneksi internet.', 'err');
+    return;
+  }
+  sel.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+  data.forEach(function(p) {
+    var o = document.createElement('option');
+    o.value = p.id; o.textContent = p.name;
+    sel.appendChild(o);
   });
+  // Auto-select Sulawesi Selatan jika ada
+  Array.from(sel.options).forEach(function(o) {
+    if (o.textContent.toUpperCase().includes('SULAWESI SELATAN')) {
+      sel.value = o.value;
+      muatKabupaten();
+    }
+  });
+}
+
+async function muatKabupaten() {
+  var provId = document.getElementById('f_provinsi').value;
+  var kabEl  = document.getElementById('f_kabupaten');
+  var kecEl  = document.getElementById('f_kec');
+  var desaEl = document.getElementById('f_desa');
+
+  kabEl.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
+  kabEl.disabled  = true;
+  kecEl.innerHTML = '<option value="">-- Pilih Kabupaten Dulu --</option>';
+  kecEl.disabled  = true;
+  desaEl.innerHTML = '<option value="">-- Pilih Kecamatan Dulu --</option>';
+  desaEl.disabled  = true;
+
+  if (!provId) return;
+  setWilayahLoading('loadKabupaten', true);
+  var data = await fetchWilayah(WILAYAH_API + '/regencies/' + provId + '.json');
+  setWilayahLoading('loadKabupaten', false);
+  if (!data) { toast('⚠️ Gagal memuat kabupaten/kota.', 'err'); return; }
+  data.forEach(function(k) {
+    var o = document.createElement('option');
+    o.value = k.id; o.textContent = k.name;
+    kabEl.appendChild(o);
+  });
+  kabEl.disabled = false;
+  // Auto-select Toraja Utara jika ada
+  Array.from(kabEl.options).forEach(function(o) {
+    if (o.textContent.toUpperCase().includes('TORAJA UTARA')) {
+      kabEl.value = o.value;
+      muatKecamatan();
+    }
+  });
+}
+
+async function muatKecamatan() {
+  var kabId  = document.getElementById('f_kabupaten').value;
+  var kabNama = document.getElementById('f_kabupaten').options[document.getElementById('f_kabupaten').selectedIndex].text || '';
+  var kecEl  = document.getElementById('f_kec');
+  var desaEl = document.getElementById('f_desa');
+
+  kecEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+  kecEl.disabled  = true;
+  desaEl.innerHTML = '<option value="">-- Pilih Kecamatan Dulu --</option>';
+  desaEl.disabled  = true;
+
+  if (!kabId) return;
+
+  // Jika Toraja Utara, gunakan data lokal
+  if (kabNama.toUpperCase().includes('TORAJA UTARA')) {
+    Object.keys(dataTorut).forEach(function(k) {
+      var o = document.createElement('option'); o.value = k; o.textContent = k; kecEl.appendChild(o);
+    });
+    kecEl.disabled = false;
+    kecEl.onchange = muatDesaLokal;
+    return;
+  }
+
+  kecEl.onchange = muatDesa;
+  setWilayahLoading('loadKecamatan', true);
+  var data = await fetchWilayah(WILAYAH_API + '/districts/' + kabId + '.json');
+  setWilayahLoading('loadKecamatan', false);
+  if (!data) { toast('⚠️ Gagal memuat kecamatan.', 'err'); return; }
+  data.forEach(function(k) {
+    var o = document.createElement('option');
+    o.value = k.id; o.textContent = k.name;
+    kecEl.appendChild(o);
+  });
+  kecEl.disabled = false;
+}
+
+async function muatDesa() {
+  var kecId  = document.getElementById('f_kec').value;
+  var desaEl = document.getElementById('f_desa');
+  desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
+  desaEl.disabled  = true;
+  if (!kecId) return;
+  setWilayahLoading('loadDesa', true);
+  var data = await fetchWilayah(WILAYAH_API + '/villages/' + kecId + '.json');
+  setWilayahLoading('loadDesa', false);
+  if (!data) { toast('⚠️ Gagal memuat desa/kelurahan.', 'err'); return; }
+  data.forEach(function(d) {
+    var o = document.createElement('option');
+    o.value = d.name; o.textContent = d.name;
+    desaEl.appendChild(o);
+  });
+  desaEl.disabled = false;
+}
+
+function muatDesaLokal() {
+  var kec    = document.getElementById('f_kec').value;
+  var desaEl = document.getElementById('f_desa');
+  desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
+  desaEl.disabled  = true;
+  if (!kec || !dataTorut[kec]) return;
+  dataTorut[kec].forEach(function(d) {
+    var o = document.createElement('option'); o.value = d; o.textContent = d; desaEl.appendChild(o);
+  });
+  desaEl.disabled = false;
 }
 </script>
 </body>
