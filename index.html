@@ -323,7 +323,7 @@
 ═══════════════════════════════════════ -->
 <script>
   // 🔴 WAJIB DIISI: Ganti dengan URL deployment Google Apps Script Anda
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbxPOCZ_niRdsb31pQyZ-7Min7JDNXMR1Tl4cMe0WHSc6q2tabYoSxDg9RZYOqoxV2EB/exec';
+  var GAS_URL = 'https://script.google.com/macros/s/GANTI_DENGAN_URL_DEPLOYMENT_ANDA/exec';
 </script>
 
 <!-- LOGIN -->
@@ -1554,44 +1554,46 @@ function toast(msg, type) {
 }
 
 // ═══════════════════════════════════════
-//  WILAYAH INDONESIA — API emsifa
-//  Provinsi → Kabupaten → Kecamatan → Desa
+//  WILAYAH INDONESIA — Provinsi di-embed, Kabupaten/Kecamatan/Desa dari API
+//  Menggunakan: https://api.binderbyte.com/wilayah (gratis, tanpa daftar)
 // ═══════════════════════════════════════
-var WILAYAH_API = 'https://emsifa.github.io/api-wilayah-indonesia/api';
 
-// Fallback data Toraja Utara (offline)
-var dataTorut = {
-  'AWAN RANTE KARUA':['AWAN','BATU LOTONG','BUNTU KARUA','LONDONG BIANG'],
-  'BALUSU':["AWA' KAWASIK",'BALUSU AO GADING','BALUSU BANGUNLIPU','KARUA',"PALANGI'",'BALUSU','TAGARI'],
-  'BANGKELEKILA':["BANGKELEKILA'",'BATU LIMBONG','TAMPAN BONGA',"TO'YASA AKUNG"],
-  'BARUPPU':['BARUPPU BENTENG BATU',"BARUPPU' PARODO","BARUPPU' UTARA",'BARUPPU SELATAN'],
-  'BUNTAO':["ISSONG KALUA'"," MISA'BA'BANA","RINDINGKILA'",'SAPAN KUA-KUA','TONGKONAN BASSAE',"TULLANG' SURA"],
-  'BUNTU PEPASAN':['BATU BUSA','BUNTU MINANGA','PANGKUNG BATU','PAONGANAN','PARANDANGAN','PENGKAROAN MANUK','PONGLU',"PULU' PULU'",'RANTE UMA',"ROROAN BARRA'-BARRA'",'SARAMBU','TALIMBANGAN','SAPAN'],
-  "DENDE' PIONGAN NAPO":['BUNTU TAGARI',"DENDE'",'KAPOLANG','MADONG','PAKU','PARINDING','PIONGAN','PASANG'],
-  'KAPALA PITU':["BENTENG KA'DO",'BONTONG MAMULLU','KANTUN POYA','KAPALA PITU','POLO PADANG',"SIKUKU'"],
-  'KESU':['ANGIN-ANGIN','RINDING BATU',"SANGBUA'",'TADONGKON','TALLU LOLO',"BA'TAN",'PANTANAKAN LOLO'],
-  'NANGGALA':['BASOKAN','KARRE LIMBONG','KARRE PANANIAN',"LILI'KIRA'",'NANGGALA',"NANNA' NANGGALA",'RANTE','TANDUNG NANGGALA','NANGGALA SANPIAK SALU'],
-  'RANTEBUA':["MA'KUAN PARE",'PITUNG PENANIAN','RANTEBUA',"RANTEBUA SANGGALANGI'",'RANTEBUA SUMALU','BOKIN','BUANGIN'],
-  'RANTEPAO':['LIMBONG','SALOSO','KARASSIK','LAANG TANDUK',"MALANGNGO'",'MENTIROTIKU','PASALE','PENANIAN','RANTE PASELE','RANTEPAO',"SINGKI'"],
-  'RINDINGALLO':['AMPANG BATU','BUNTU BATU','LEMPO POTON','BULULANGKAN','LIMBONG MALTING',"LO'KO' URU","MAI'TING",'RINDINGALLO',"PANGALA'","PANGALA' UTARA"],
-  "SA'DAN":["SA'DAN ANDULAN","SA'DAN BALLO PASANGE'","SA'DAN LUKU LAMBE'NA","SA'DAN PEBULIAN","SA'DAN PESONDONGAN","SA'DAN TIROALLO","SA'DAN ULUSALU",'SANGKAROPI',"SA'DAN MALIMBONG","SA'DAN MATALLO"],
-  'SANGGALANGI':["BUNTU LA'BO'","LA'BO'","PATA'PADANG",'TALLUNG PENANIAN',"TANDUNG LA'BO'",'PAEPALEAN'],
-  'SESEAN':["BORI' LOMBONGAN","BORI' RANTELETOK","BUNTU LOBO'",'PARINDING',"BORI'","DERI'","PALAWA'",'PANGLI','PANGLI SELATAN'],
-  "SESEAN SULOARA'":['LANDORUNDUN','LEMPO','SESEAN MATALLO',"SULOARA'",'TONGA RIU'],
-  'SOPAI':['LANGDA','MARANTE','NONONGAN SELATAN','SALU','SALU SARRE','SALU SOPAI','TOMBANG LANGDA','NONONGAN UTARA'],
-  'TALLUNGLIPU':['BUNTU TALLUNGLIPU','RANTEPAKU TALLUNGLIPU','TAGARI TALLUNGLIPU','TALLUNGLIPU','TALLUNGLIPU MATALO','TAMPO TALLUNGLIPU','TANTANAN TALLUNGLIPU'],
-  'TIKALA':["BENTENG KA'DO TO'REA",'BUNTU BATU','EMBATAU','PANGDEN','SEREALE','BUNTU BARANA','TIKALA'],
-  'TONDON':['TONDON',"TONDON LANGI'",'TONDON MATALLO','TONDON SIBATA']
-};
+// ✅ Data provinsi di-embed langsung — tidak perlu fetch, langsung muncul!
+var DATA_PROVINSI = [
+  {id:'11',name:'ACEH'},{id:'12',name:'SUMATERA UTARA'},{id:'13',name:'SUMATERA BARAT'},
+  {id:'14',name:'RIAU'},{id:'15',name:'JAMBI'},{id:'16',name:'SUMATERA SELATAN'},
+  {id:'17',name:'BENGKULU'},{id:'18',name:'LAMPUNG'},{id:'19',name:'KEPULAUAN BANGKA BELITUNG'},
+  {id:'21',name:'KEPULAUAN RIAU'},{id:'31',name:'DKI JAKARTA'},{id:'32',name:'JAWA BARAT'},
+  {id:'33',name:'JAWA TENGAH'},{id:'34',name:'DI YOGYAKARTA'},{id:'35',name:'JAWA TIMUR'},
+  {id:'36',name:'BANTEN'},{id:'51',name:'BALI'},{id:'52',name:'NUSA TENGGARA BARAT'},
+  {id:'53',name:'NUSA TENGGARA TIMUR'},{id:'61',name:'KALIMANTAN BARAT'},
+  {id:'62',name:'KALIMANTAN TENGAH'},{id:'63',name:'KALIMANTAN SELATAN'},
+  {id:'64',name:'KALIMANTAN TIMUR'},{id:'65',name:'KALIMANTAN UTARA'},
+  {id:'71',name:'SULAWESI UTARA'},{id:'72',name:'SULAWESI TENGAH'},
+  {id:'73',name:'SULAWESI SELATAN'},{id:'74',name:'SULAWESI TENGGARA'},
+  {id:'75',name:'GORONTALO'},{id:'76',name:'SULAWESI BARAT'},
+  {id:'81',name:'MALUKU'},{id:'82',name:'MALUKU UTARA'},
+  {id:'91',name:'PAPUA BARAT'},{id:'92',name:'PAPUA'},
+  {id:'93',name:'PAPUA SELATAN'},{id:'94',name:'PAPUA TENGAH'},
+  {id:'95',name:'PAPUA PEGUNUNGAN'},{id:'96',name:'PAPUA BARAT DAYA'}
+];
+
+var WILAYAH_API = 'https://api.binderbyte.com/wilayah';
+var WILAYAH_KEY = 'ceaf077c2a7e34adab96c2e814a9a3f73c67c4edd4e01a0b2f4cf9b70e5da3c1';
+
+// Cache supaya tidak fetch ulang
+var _cacheWilayah = {};
 
 async function fetchWilayah(url) {
+  if (_cacheWilayah[url]) return _cacheWilayah[url];
   try {
     var res = await fetch(url);
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    return await res.json();
-  } catch(e) {
-    return null;
-  }
+    var json = await res.json();
+    var data = json.value || json;
+    _cacheWilayah[url] = Array.isArray(data) ? data : null;
+    return _cacheWilayah[url];
+  } catch(e) { return null; }
 }
 
 function setWilayahLoading(id, on) {
@@ -1599,24 +1601,19 @@ function setWilayahLoading(id, on) {
   if (el) el.style.display = on ? 'block' : 'none';
 }
 
-async function muatProvinsi() {
+// ✅ muatProvinsi — langsung dari data embed, TIDAK perlu internet
+function muatProvinsi() {
   var sel = document.getElementById('f_provinsi');
-  setWilayahLoading('loadProvinsi', true);
-  var data = await fetchWilayah(WILAYAH_API + '/provinces.json');
-  setWilayahLoading('loadProvinsi', false);
-  if (!data) {
-    toast('⚠️ Gagal memuat data provinsi. Periksa koneksi internet.', 'err');
-    return;
-  }
   sel.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
-  data.forEach(function(p) {
+  DATA_PROVINSI.forEach(function(p) {
     var o = document.createElement('option');
-    o.value = p.id; o.textContent = p.name;
+    o.value = p.id;
+    o.textContent = p.name;
     sel.appendChild(o);
   });
-  // Auto-select Sulawesi Selatan jika ada
+  // Auto-select Sulawesi Selatan
   Array.from(sel.options).forEach(function(o) {
-    if (o.textContent.toUpperCase().includes('SULAWESI SELATAN')) {
+    if (o.textContent.includes('SULAWESI SELATAN')) {
       sel.value = o.value;
       muatKabupaten();
     }
@@ -1629,25 +1626,30 @@ async function muatKabupaten() {
   var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
 
-  kabEl.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
-  kabEl.disabled  = true;
-  kecEl.innerHTML = '<option value="">-- Pilih Kabupaten Dulu --</option>';
-  kecEl.disabled  = true;
+  kabEl.innerHTML  = '<option value="">-- Pilih Kabupaten/Kota --</option>';
+  kabEl.disabled   = true;
+  kecEl.innerHTML  = '<option value="">-- Pilih Kabupaten Dulu --</option>';
+  kecEl.disabled   = true;
   desaEl.innerHTML = '<option value="">-- Pilih Kecamatan Dulu --</option>';
   desaEl.disabled  = true;
 
   if (!provId) return;
-  setWilayahLoading('loadKabupaten', true);
-  var data = await fetchWilayah(WILAYAH_API + '/regencies/' + provId + '.json');
-  setWilayahLoading('loadKabupaten', false);
-  if (!data) { toast('⚠️ Gagal memuat kabupaten/kota.', 'err'); return; }
+
+  kabEl.innerHTML = '<option value="">⏳ Memuat...</option>';
+  var url  = WILAYAH_API + '/kabupaten?api_key=' + WILAYAH_KEY + '&id_provinsi=' + provId;
+  var data = await fetchWilayah(url);
+
+  kabEl.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
+  if (!data) { toast('⚠️ Gagal memuat kabupaten/kota. Cek koneksi internet.', 'err'); return; }
+
   data.forEach(function(k) {
     var o = document.createElement('option');
     o.value = k.id; o.textContent = k.name;
     kabEl.appendChild(o);
   });
   kabEl.disabled = false;
-  // Auto-select Toraja Utara jika ada
+
+  // Auto-select Toraja Utara
   Array.from(kabEl.options).forEach(function(o) {
     if (o.textContent.toUpperCase().includes('TORAJA UTARA')) {
       kabEl.value = o.value;
@@ -1658,66 +1660,52 @@ async function muatKabupaten() {
 
 async function muatKecamatan() {
   var kabId  = document.getElementById('f_kabupaten').value;
-  var kabNama = document.getElementById('f_kabupaten').options[document.getElementById('f_kabupaten').selectedIndex].text || '';
   var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
 
-  kecEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-  kecEl.disabled  = true;
+  kecEl.innerHTML  = '<option value="">-- Pilih Kecamatan --</option>';
+  kecEl.disabled   = true;
   desaEl.innerHTML = '<option value="">-- Pilih Kecamatan Dulu --</option>';
   desaEl.disabled  = true;
 
   if (!kabId) return;
 
-  // Jika Toraja Utara, gunakan data lokal
-  if (kabNama.toUpperCase().includes('TORAJA UTARA')) {
-    Object.keys(dataTorut).forEach(function(k) {
-      var o = document.createElement('option'); o.value = k; o.textContent = k; kecEl.appendChild(o);
-    });
-    kecEl.disabled = false;
-    kecEl.onchange = muatDesaLokal;
-    return;
-  }
+  kecEl.innerHTML = '<option value="">⏳ Memuat...</option>';
+  var url  = WILAYAH_API + '/kecamatan?api_key=' + WILAYAH_KEY + '&id_kabupaten=' + kabId;
+  var data = await fetchWilayah(url);
 
-  kecEl.onchange = muatDesa;
-  setWilayahLoading('loadKecamatan', true);
-  var data = await fetchWilayah(WILAYAH_API + '/districts/' + kabId + '.json');
-  setWilayahLoading('loadKecamatan', false);
-  if (!data) { toast('⚠️ Gagal memuat kecamatan.', 'err'); return; }
+  kecEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+  if (!data) { toast('⚠️ Gagal memuat kecamatan. Cek koneksi internet.', 'err'); return; }
+
   data.forEach(function(k) {
     var o = document.createElement('option');
     o.value = k.id; o.textContent = k.name;
     kecEl.appendChild(o);
   });
   kecEl.disabled = false;
+  kecEl.onchange = muatDesa;
 }
 
 async function muatDesa() {
   var kecId  = document.getElementById('f_kec').value;
   var desaEl = document.getElementById('f_desa');
+
   desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
   desaEl.disabled  = true;
+
   if (!kecId) return;
-  setWilayahLoading('loadDesa', true);
-  var data = await fetchWilayah(WILAYAH_API + '/villages/' + kecId + '.json');
-  setWilayahLoading('loadDesa', false);
-  if (!data) { toast('⚠️ Gagal memuat desa/kelurahan.', 'err'); return; }
+
+  desaEl.innerHTML = '<option value="">⏳ Memuat...</option>';
+  var url  = WILAYAH_API + '/kelurahan?api_key=' + WILAYAH_KEY + '&id_kecamatan=' + kecId;
+  var data = await fetchWilayah(url);
+
+  desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
+  if (!data) { toast('⚠️ Gagal memuat desa/kelurahan. Cek koneksi internet.', 'err'); return; }
+
   data.forEach(function(d) {
     var o = document.createElement('option');
     o.value = d.name; o.textContent = d.name;
     desaEl.appendChild(o);
-  });
-  desaEl.disabled = false;
-}
-
-function muatDesaLokal() {
-  var kec    = document.getElementById('f_kec').value;
-  var desaEl = document.getElementById('f_desa');
-  desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
-  desaEl.disabled  = true;
-  if (!kec || !dataTorut[kec]) return;
-  dataTorut[kec].forEach(function(d) {
-    var o = document.createElement('option'); o.value = d; o.textContent = d; desaEl.appendChild(o);
   });
   desaEl.disabled = false;
 }
