@@ -1554,11 +1554,21 @@ function toast(msg, type) {
 }
 
 // ═══════════════════════════════════════
-//  WILAYAH INDONESIA — Provinsi di-embed, Kabupaten/Kecamatan/Desa dari API
-//  Menggunakan: https://api.binderbyte.com/wilayah (gratis, tanpa daftar)
+//  WILAYAH INDONESIA — Emsifa API (gratis, tanpa API key)
+//  https://emsifa.github.io/api-wilayah-indonesia
+//
+//  PENTING — cara nilai disimpan:
+//  • Provinsi  : option.value = id provinsi  → nama diambil via prov.text  ✅
+//  • Kabupaten : option.value = id kabupaten → nama diambil via kab.text   ✅
+//  • Kecamatan : option.value = NAMA kecamatan langsung                    ✅
+//                option.dataset.id = id kecamatan (untuk fetch desa)
+//  • Desa      : option.value = NAMA desa langsung                         ✅
+//
+//  simpanForm() sudah memakai: prov.text, kab.text, kec (value), desa (value)
+//  Jadi sistem ini 100% kompatibel tanpa ubah simpanForm().
 // ═══════════════════════════════════════
 
-// ✅ Data provinsi di-embed langsung — tidak perlu fetch, langsung muncul!
+// ✅ Data provinsi di-embed — tidak perlu fetch, langsung muncul tanpa internet
 var DATA_PROVINSI = [
   {id:'11',name:'ACEH'},{id:'12',name:'SUMATERA UTARA'},{id:'13',name:'SUMATERA BARAT'},
   {id:'14',name:'RIAU'},{id:'15',name:'JAMBI'},{id:'16',name:'SUMATERA SELATAN'},
@@ -1578,10 +1588,10 @@ var DATA_PROVINSI = [
   {id:'95',name:'PAPUA PEGUNUNGAN'},{id:'96',name:'PAPUA BARAT DAYA'}
 ];
 
-var WILAYAH_API = 'https://api.binderbyte.com/wilayah';
-var WILAYAH_KEY = '7476963e8459de9c913784458b52fa2a32bb37c72588c68b370a972df161eecc';
+// Base URL emsifa — CDN GitHub Pages, gratis & tanpa API key
+var EMSIFA_BASE = 'https://emsifa.github.io/api-wilayah-indonesia/api';
 
-// Cache supaya tidak fetch ulang
+// Cache agar tidak fetch ulang data yang sama
 var _cacheWilayah = {};
 
 async function fetchWilayah(url) {
@@ -1589,8 +1599,7 @@ async function fetchWilayah(url) {
   try {
     var res = await fetch(url);
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    var json = await res.json();
-    var data = json.value || json;
+    var data = await res.json();
     _cacheWilayah[url] = Array.isArray(data) ? data : null;
     return _cacheWilayah[url];
   } catch(e) { return null; }
@@ -1601,17 +1610,17 @@ function setWilayahLoading(id, on) {
   if (el) el.style.display = on ? 'block' : 'none';
 }
 
-// ✅ muatProvinsi — langsung dari data embed, TIDAK perlu internet
+// ── muatProvinsi: dari data embed, instan tanpa internet ─────────────────────
 function muatProvinsi() {
   var sel = document.getElementById('f_provinsi');
   sel.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
   DATA_PROVINSI.forEach(function(p) {
     var o = document.createElement('option');
-    o.value = p.id;
-    o.textContent = p.name;
+    o.value = p.id;          // id provinsi → dipakai untuk fetch kabupaten
+    o.textContent = p.name;  // nama → disimpan via prov.text di simpanForm()
     sel.appendChild(o);
   });
-  // Auto-select Sulawesi Selatan
+  // Auto-select Sulawesi Selatan (provinsi default PKBM)
   Array.from(sel.options).forEach(function(o) {
     if (o.textContent.includes('SULAWESI SELATAN')) {
       sel.value = o.value;
@@ -1620,12 +1629,14 @@ function muatProvinsi() {
   });
 }
 
+// ── muatKabupaten: fetch dari emsifa berdasarkan id provinsi ─────────────────
 async function muatKabupaten() {
   var provId = document.getElementById('f_provinsi').value;
   var kabEl  = document.getElementById('f_kabupaten');
   var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
 
+  // Reset semua dropdown di bawahnya
   kabEl.innerHTML  = '<option value="">-- Pilih Kabupaten/Kota --</option>';
   kabEl.disabled   = true;
   kecEl.innerHTML  = '<option value="">-- Pilih Kabupaten Dulu --</option>';
@@ -1635,21 +1646,30 @@ async function muatKabupaten() {
 
   if (!provId) return;
 
-  kabEl.innerHTML = '<option value="">⏳ Memuat...</option>';
-  var url  = WILAYAH_API + '/kabupaten?api_key=' + WILAYAH_KEY + '&id_provinsi=' + provId;
+  kabEl.innerHTML = '<option value="">⏳ Memuat kabupaten…</option>';
+  setWilayahLoading('loadKabupaten', true);
+
+  // Emsifa: /api/regencies/{id_provinsi}.json
+  var url  = EMSIFA_BASE + '/regencies/' + provId + '.json';
   var data = await fetchWilayah(url);
 
+  setWilayahLoading('loadKabupaten', false);
   kabEl.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
-  if (!data) { toast('⚠️ Gagal memuat kabupaten/kota. Cek koneksi internet.', 'err'); return; }
+
+  if (!data) {
+    toast('⚠️ Gagal memuat kabupaten/kota. Cek koneksi internet.', 'err');
+    return;
+  }
 
   data.forEach(function(k) {
     var o = document.createElement('option');
-    o.value = k.id; o.textContent = k.name;
+    o.value = k.id;          // id kabupaten → dipakai untuk fetch kecamatan
+    o.textContent = k.name;  // nama → disimpan via kab.text di simpanForm()
     kabEl.appendChild(o);
   });
   kabEl.disabled = false;
 
-  // Auto-select Toraja Utara
+  // Auto-select Toraja Utara jika tersedia
   Array.from(kabEl.options).forEach(function(o) {
     if (o.textContent.toUpperCase().includes('TORAJA UTARA')) {
       kabEl.value = o.value;
@@ -1658,6 +1678,7 @@ async function muatKabupaten() {
   });
 }
 
+// ── muatKecamatan: fetch dari emsifa berdasarkan id kabupaten ────────────────
 async function muatKecamatan() {
   var kabId  = document.getElementById('f_kabupaten').value;
   var kecEl  = document.getElementById('f_kec');
@@ -1670,41 +1691,69 @@ async function muatKecamatan() {
 
   if (!kabId) return;
 
-  kecEl.innerHTML = '<option value="">⏳ Memuat...</option>';
-  var url  = WILAYAH_API + '/kecamatan?api_key=' + WILAYAH_KEY + '&id_kabupaten=' + kabId;
+  kecEl.innerHTML = '<option value="">⏳ Memuat kecamatan…</option>';
+  setWilayahLoading('loadKecamatan', true);
+
+  // Emsifa: /api/districts/{id_kabupaten}.json
+  var url  = EMSIFA_BASE + '/districts/' + kabId + '.json';
   var data = await fetchWilayah(url);
 
+  setWilayahLoading('loadKecamatan', false);
   kecEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-  if (!data) { toast('⚠️ Gagal memuat kecamatan. Cek koneksi internet.', 'err'); return; }
+
+  if (!data) {
+    toast('⚠️ Gagal memuat kecamatan. Cek koneksi internet.', 'err');
+    return;
+  }
 
   data.forEach(function(k) {
     var o = document.createElement('option');
-    o.value = k.id; o.textContent = k.name;
+    // ✅ value = NAMA kecamatan — langsung disimpan oleh simpanForm() via kec = f_kec.value
+    o.value = k.name;
+    o.textContent = k.name;
+    // Simpan id di data-id agar muatDesa() bisa fetch desa
+    o.dataset.id = k.id;
     kecEl.appendChild(o);
   });
   kecEl.disabled = false;
+  // Pastikan onchange terpasang ke muatDesa
   kecEl.onchange = muatDesa;
 }
 
+// ── muatDesa: fetch dari emsifa berdasarkan id kecamatan (dari data-id) ──────
 async function muatDesa() {
-  var kecId  = document.getElementById('f_kec').value;
+  var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
+
+  // Ambil id kecamatan dari dataset option yang terpilih
+  var selOpt = kecEl.options[kecEl.selectedIndex];
+  var kecId  = selOpt ? selOpt.dataset.id : '';
 
   desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
   desaEl.disabled  = true;
 
   if (!kecId) return;
 
-  desaEl.innerHTML = '<option value="">⏳ Memuat...</option>';
-  var url  = WILAYAH_API + '/kelurahan?api_key=' + WILAYAH_KEY + '&id_kecamatan=' + kecId;
+  desaEl.innerHTML = '<option value="">⏳ Memuat desa…</option>';
+  setWilayahLoading('loadDesa', true);
+
+  // Emsifa: /api/villages/{id_kecamatan}.json
+  var url  = EMSIFA_BASE + '/villages/' + kecId + '.json';
   var data = await fetchWilayah(url);
 
+  setWilayahLoading('loadDesa', false);
   desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
-  if (!data) { toast('⚠️ Gagal memuat desa/kelurahan. Cek koneksi internet.', 'err'); return; }
+
+  if (!data) {
+    toast('⚠️ Gagal memuat desa/kelurahan. Cek koneksi internet.', 'err');
+    return;
+  }
 
   data.forEach(function(d) {
     var o = document.createElement('option');
-    o.value = d.name; o.textContent = d.name;
+    // ✅ value = NAMA desa — langsung disimpan oleh simpanForm() via desa = f_desa.value
+    o.value = d.name;
+    o.textContent = d.name;
     desaEl.appendChild(o);
   });
   desaEl.disabled = false;
