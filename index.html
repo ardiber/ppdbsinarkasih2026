@@ -258,7 +258,7 @@
     .user-actions{display:flex;gap:6px;}
 
     /* ═══════════════════════════════════════
-       PRINT STYLES — PDF rapi menggunakan print
+       PRINT STYLES
     ═══════════════════════════════════════ */
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -269,14 +269,10 @@
       .panel { display: block !important; }
       #panel-data { display: block !important; }
       .card { border: none !important; padding: 0 !important; box-shadow: none !important; background: #fff !important; }
-
-      /* Header cetak */
       .print-header { display: block !important; text-align: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #1e3a5f; }
       .print-header h2 { font-size: 13pt !important; font-weight: 800; color: #0d2137 !important; margin-bottom: 3px; }
       .print-header p { font-size: 9pt !important; color: #444 !important; }
       .print-header .print-instansi { font-size: 10pt !important; font-weight: 700; color: #1e3a5f !important; margin-bottom: 2px; }
-
-      /* Tabel */
       .table-wrap { border: 1px solid #aaa !important; box-shadow: none !important; overflow: visible !important; border-radius: 0 !important; }
       table { min-width: auto !important; width: 100% !important; font-size: 7.5pt !important; border-collapse: collapse !important; }
       thead { background: #1e3a5f !important; }
@@ -295,8 +291,6 @@
       .bprog-a { background: #fef3c7 !important; color: #78350f !important; }
       .td-foto { display: none !important; }
       .foto-thumb { display: none !important; }
-
-      /* Footer cetak */
       .print-footer { display: block !important; margin-top: 16px; text-align: right; font-size: 8pt; color: #555; }
       .print-footer strong { color: #0d2137; }
     }
@@ -318,11 +312,7 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-  ⚙️  KONFIGURASI — GANTI URL DI SINI
-═══════════════════════════════════════ -->
 <script>
-  // 🔴 WAJIB DIISI: Ganti dengan URL deployment Google Apps Script Anda
   var GAS_URL = 'https://script.google.com/macros/s/AKfycbxPOCZ_niRdsb31pQyZ-7Min7JDNXMR1Tl4cMe0WHSc6q2tabYoSxDg9RZYOqoxV2EB/exec';
 </script>
 
@@ -412,12 +402,10 @@
         <div class="card-head">📝 Form Input Data Peserta</div>
         <div class="grid">
 
-          <!-- SEKSI 1: DATA IDENTITAS -->
           <div class="form-section full">
             <div class="form-section-title">📋 Data Identitas</div>
           </div>
 
-          <!-- NIK -->
           <div class="field">
             <label>NIK <span class="req">*</span></label>
             <div class="nik-wrapper">
@@ -523,7 +511,6 @@
             </div>
           </div>
 
-          <!-- Alamat Lengkap (baru untuk semua program) -->
           <div class="field full">
             <label>Alamat Lengkap <span class="req">*</span> <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(Nama jalan, RT/RW, dusun, dll)</span></label>
             <textarea id="f_alamat" rows="2" placeholder="Contoh: Dusun Buntu RT 03, Jl. Poros Rantepao km 5"></textarea>
@@ -549,12 +536,9 @@
 
           <div class="field">
             <label>Tahun Lulus / Pendaftaran <span class="req">*</span></label>
-            <select id="f_tahunlulus">
-              <!-- Diisi otomatis oleh JavaScript (dinamis) -->
-            </select>
+            <select id="f_tahunlulus"></select>
           </div>
 
-          <!-- NISN — Hanya muncul untuk Paket B & C -->
           <div class="field full" id="field_nisn" style="display:none;">
             <label>NISN (Nomor Induk Siswa Nasional) <span class="req">*</span> <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">— Khusus Paket B & C</span></label>
             <input type="text" id="f_nisn" placeholder="10 digit NISN" maxlength="10" autocomplete="off"/>
@@ -625,7 +609,6 @@
 
     <!-- ═══ PANEL DATA ═══ -->
     <div class="panel" id="panel-data">
-      <!-- Header khusus cetak / PDF -->
       <div class="print-header">
         <div class="print-instansi">PKBM SINAR KASIH</div>
         <h2>DATA PESERTA – PKBM SINAR KASIH</h2>
@@ -651,7 +634,6 @@
           <option value="KUM">KUM</option>
           <option value="Kursus Pelatihan">Kursus Pelatihan</option>
         </select>
-        <!-- ✅ FIX: Filter tahun dinamis -->
         <div class="year-selector">
           <label>Tahun:</label>
           <select id="filterTahun" onchange="filterTabel()">
@@ -682,13 +664,12 @@
               </tr>
             </thead>
             <tbody id="tBody">
-              <tr><td colspan="20" style="text-align:center;padding:32px;color:var(--muted);">Klik <strong>Refresh</strong> untuk memuat data.</td></tr>
+              <tr><td colspan="22" style="text-align:center;padding:32px;color:var(--muted);">Klik <strong>Refresh</strong> untuk memuat data.</td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Footer cetak -->
       <div class="print-footer">
         <strong>PKBM Sinar Kasih</strong> &nbsp;·&nbsp; Dokumen dicetak otomatis dari Sistem Pendataan
       </div>
@@ -809,19 +790,72 @@ var nikDebounce   = null;
 var editUserRow   = null;
 var fotoBase64    = null;
 var fotoMimeType  = null;
-var fotoFileName  = null;  // nama file asli
-var fotoFileExt   = 'jpg'; // ekstensi file
+var fotoFileName  = null;
+var fotoFileExt   = 'jpg';
 var fotoUrl       = null;
 
 // ═══════════════════════════════════════
-//  ✅ FIX: TAHUN LULUS DINAMIS
-//  Isi otomatis dari tahun sekarang mundur ke 1990
+//  DATA PROVINSI (embed, instan, tanpa internet)
+// ═══════════════════════════════════════
+var DATA_PROVINSI = [
+  {id:'11',name:'ACEH'},{id:'12',name:'SUMATERA UTARA'},{id:'13',name:'SUMATERA BARAT'},
+  {id:'14',name:'RIAU'},{id:'15',name:'JAMBI'},{id:'16',name:'SUMATERA SELATAN'},
+  {id:'17',name:'BENGKULU'},{id:'18',name:'LAMPUNG'},{id:'19',name:'KEPULAUAN BANGKA BELITUNG'},
+  {id:'21',name:'KEPULAUAN RIAU'},{id:'31',name:'DKI JAKARTA'},{id:'32',name:'JAWA BARAT'},
+  {id:'33',name:'JAWA TENGAH'},{id:'34',name:'DI YOGYAKARTA'},{id:'35',name:'JAWA TIMUR'},
+  {id:'36',name:'BANTEN'},{id:'51',name:'BALI'},{id:'52',name:'NUSA TENGGARA BARAT'},
+  {id:'53',name:'NUSA TENGGARA TIMUR'},{id:'61',name:'KALIMANTAN BARAT'},
+  {id:'62',name:'KALIMANTAN TENGAH'},{id:'63',name:'KALIMANTAN SELATAN'},
+  {id:'64',name:'KALIMANTAN TIMUR'},{id:'65',name:'KALIMANTAN UTARA'},
+  {id:'71',name:'SULAWESI UTARA'},{id:'72',name:'SULAWESI TENGAH'},
+  {id:'73',name:'SULAWESI SELATAN'},{id:'74',name:'SULAWESI TENGGARA'},
+  {id:'75',name:'GORONTALO'},{id:'76',name:'SULAWESI BARAT'},
+  {id:'81',name:'MALUKU'},{id:'82',name:'MALUKU UTARA'},
+  {id:'91',name:'PAPUA BARAT'},{id:'92',name:'PAPUA'},
+  {id:'93',name:'PAPUA SELATAN'},{id:'94',name:'PAPUA TENGAH'},
+  {id:'95',name:'PAPUA PEGUNUNGAN'},{id:'96',name:'PAPUA BARAT DAYA'}
+];
+
+// ═══════════════════════════════════════
+//  ✅ DATA KABUPATEN SULAWESI SELATAN
+//  Embed offline — 24 kab/kota lengkap
+//  ID sesuai standar emsifa / Kemendagri
+//  Provinsi Sulsel = id '73'
+// ═══════════════════════════════════════
+var DATA_KAB_SULSEL = [
+  {id:'7301', name:'KABUPATEN KEPULAUAN SELAYAR'},
+  {id:'7302', name:'KABUPATEN BULUKUMBA'},
+  {id:'7303', name:'KABUPATEN BANTAENG'},
+  {id:'7304', name:'KABUPATEN JENEPONTO'},
+  {id:'7305', name:'KABUPATEN TAKALAR'},
+  {id:'7306', name:'KABUPATEN GOWA'},
+  {id:'7307', name:'KABUPATEN SINJAI'},
+  {id:'7308', name:'KABUPATEN MAROS'},
+  {id:'7309', name:'KABUPATEN PANGKAJENE DAN KEPULAUAN'},
+  {id:'7310', name:'KABUPATEN BARRU'},
+  {id:'7311', name:'KABUPATEN BONE'},
+  {id:'7312', name:'KABUPATEN SOPPENG'},
+  {id:'7313', name:'KABUPATEN WAJO'},
+  {id:'7314', name:'KABUPATEN SIDENRENG RAPPANG'},
+  {id:'7315', name:'KABUPATEN PINRANG'},
+  {id:'7316', name:'KABUPATEN ENREKANG'},
+  {id:'7317', name:'KABUPATEN LUWU'},
+  {id:'7318', name:'KABUPATEN TANA TORAJA'},
+  {id:'7322', name:'KABUPATEN LUWU UTARA'},
+  {id:'7324', name:'KABUPATEN LUWU TIMUR'},
+  {id:'7325', name:'KABUPATEN TORAJA UTARA'},
+  {id:'7371', name:'KOTA MAKASSAR'},
+  {id:'7372', name:'KOTA PAREPARE'},
+  {id:'7373', name:'KOTA PALOPO'}
+];
+
+// ═══════════════════════════════════════
+//  TAHUN DINAMIS
 // ═══════════════════════════════════════
 function isiOpsiTahun() {
   var sel  = document.getElementById('f_tahunlulus');
   var now  = new Date().getFullYear();
   sel.innerHTML = '<option value="">-- Pilih Tahun Lulus --</option>';
-  // Tambah tahun dari sekarang sampai 1990
   for (var y = now; y >= 1990; y--) {
     var opt = document.createElement('option');
     opt.value = y; opt.textContent = y;
@@ -831,7 +865,6 @@ function isiOpsiTahun() {
   optBelum.value = 'Belum Lulus'; optBelum.textContent = 'Belum Lulus';
   sel.appendChild(optBelum);
 
-  // Isi filter tahun di panel data juga
   var selFilter = document.getElementById('filterTahun');
   selFilter.innerHTML = '<option value="">Semua Tahun</option>';
   for (var y2 = now; y2 >= 1990; y2--) {
@@ -842,7 +875,7 @@ function isiOpsiTahun() {
 }
 
 // ═══════════════════════════════════════
-//  ✅ FIX: TAMPILKAN/SEMBUNYIKAN NISN SESUAI PROGRAM
+//  NISN TOGGLE
 // ═══════════════════════════════════════
 function onProgramChange() {
   var prog    = document.getElementById('f_program').value;
@@ -857,14 +890,13 @@ function onProgramChange() {
 }
 
 // ═══════════════════════════════════════
-//  ✅ FIX: UPDATE NAMA FILE FOTO OTOMATIS DARI NAMA PESERTA
+//  FOTO NAMA FILE OTOMATIS
 // ═══════════════════════════════════════
 function sanitasiNamaFile(nama) {
-  // Ubah ke huruf kecil, ganti spasi dengan underscore, hapus karakter non-alfanumerik
   return nama.toLowerCase()
     .replace(/\s+/g, '_')
     .replace(/[^a-z0-9_]/g, '')
-    .substring(0, 50); // maks 50 karakter
+    .substring(0, 50);
 }
 
 function updateFotoFileName() {
@@ -900,8 +932,8 @@ async function api(action, params) {
 //  LOGIN / SESSION
 // ═══════════════════════════════════════
 function initApp() {
-  isiOpsiTahun(); // ✅ FIX: Isi tahun dinamis saat load
-  muatProvinsi(); // ✅ Muat data provinsi dari API wilayah Indonesia
+  isiOpsiTahun();
+  muatProvinsi();
   var saved = sessionStorage.getItem('kf_token');
   if (saved) {
     api('cekSession', { token: saved })
@@ -1000,45 +1032,34 @@ function showPanel(id) {
 }
 
 // ═══════════════════════════════════════
-//  ✅ FIX: FOTO HANDLING dengan nama file otomatis
+//  FOTO HANDLING
 // ═══════════════════════════════════════
 function handleFotoChange(input) {
   var file = input.files[0];
   if (!file) return;
-
-  // Cek ukuran maks 3MB
   if (file.size > 3 * 1024 * 1024) {
     toast('❌ Ukuran foto maksimal 3MB', 'err'); input.value = ''; return;
   }
-
-  // Cek tipe file
   if (!file.type.match(/image\/(jpeg|png|webp)/)) {
     toast('❌ Hanya file JPG, PNG, atau WEBP yang diperbolehkan', 'err'); input.value = ''; return;
   }
-
   var reader = new FileReader();
   reader.onload = function(e) {
     var result   = e.target.result;
     var base64   = result.split(',')[1];
     fotoBase64   = base64;
     fotoMimeType = file.type;
-
-    // Ambil ekstensi dari file asli
     var parts    = file.name.split('.');
     fotoFileExt  = parts.length > 1 ? parts[parts.length-1].toLowerCase() : 'jpg';
     if (fotoFileExt === 'jpeg') fotoFileExt = 'jpg';
-
-    // ✅ FIX: Nama file otomatis dari nama peserta
     var nama     = document.getElementById('f_nama').value.trim();
     if (nama) {
       var namaBersih = sanitasiNamaFile(nama);
       fotoFileName   = 'foto_' + namaBersih + '.' + fotoFileExt;
     } else {
-      fotoFileName = file.name; // fallback ke nama asli jika nama belum diisi
+      fotoFileName = file.name;
     }
-
     fotoUrl = null;
-
     document.getElementById('fotoPreviewImg').src  = result;
     document.getElementById('fotoPreviewName').textContent = '📎 File asli: ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
     document.getElementById('fotoPreviewNewName').textContent = '📁 Akan disimpan sebagai: ' + fotoFileName;
@@ -1072,14 +1093,11 @@ function hapusFoto(e) {
 
 async function uploadFotoKeServer() {
   if (!fotoBase64 || !fotoFileName) return null;
-
-  // Pastikan nama file sudah menggunakan nama peserta terbaru
   var nama = document.getElementById('f_nama').value.trim();
   if (nama) {
     var namaBersih = sanitasiNamaFile(nama);
     fotoFileName   = 'foto_' + namaBersih + '.' + fotoFileExt;
   }
-
   document.getElementById('fotoUploading').style.display = 'flex';
   try {
     var res = await api('uploadFoto', {
@@ -1126,7 +1144,6 @@ function resetForm() {
   document.getElementById('f_agama').value      = '';
   document.getElementById('f_program').value    = '';
   document.getElementById('f_tahunlulus').value = '';
-  // Reset wilayah
   document.getElementById('f_provinsi').value   = '';
   var kabEl = document.getElementById('f_kabupaten');
   kabEl.innerHTML = '<option value="">-- Pilih Provinsi Dulu --</option>';
@@ -1198,8 +1215,10 @@ async function simpanForm() {
   var tl      = document.getElementById('f_tl').value.trim();
   var ttl     = document.getElementById('f_ttl').value;
   var agama   = document.getElementById('f_agama').value;
-  var prov    = document.getElementById('f_provinsi').options[document.getElementById('f_provinsi').selectedIndex];
-  var kab     = document.getElementById('f_kabupaten').options[document.getElementById('f_kabupaten').selectedIndex];
+  var provSel = document.getElementById('f_provinsi');
+  var kabSel  = document.getElementById('f_kabupaten');
+  var prov    = provSel.options[provSel.selectedIndex];
+  var kab     = kabSel.options[kabSel.selectedIndex];
   var kec     = document.getElementById('f_kec').value.trim().toUpperCase();
   var desa    = document.getElementById('f_desa').value.trim().toUpperCase();
   var program = document.getElementById('f_program').value;
@@ -1218,8 +1237,6 @@ async function simpanForm() {
   if (!desa) { toast('⚠️ Pilih Desa/Kelurahan terlebih dahulu','err'); document.getElementById('f_desa').focus(); return; }
   if (!alamat)  { toast('⚠️ Alamat Lengkap wajib diisi','err'); document.getElementById('f_alamat').focus(); return; }
   if (nikDuplikat) { toast('❌ NIK sudah terdaftar!','err'); document.getElementById('f_nik').focus(); return; }
-
-  // Validasi NISN untuk Paket B & C
   if ((program === 'Paket B' || program === 'Paket C') && !nisn) {
     toast('⚠️ NISN wajib diisi untuk ' + program,'err');
     document.getElementById('f_nisn').focus(); return;
@@ -1374,21 +1391,14 @@ function filterTabel() {
   renderTabel(filtered);
 }
 
-// ═══════════════════════════════════════
-//  ✅ FIX: CETAK PDF RAPI
-// ═══════════════════════════════════════
 function cetakPDF() {
   var prog  = document.getElementById('filterProg').value || 'Semua Program';
   var tahun = document.getElementById('filterTahun').value || 'Semua Tahun';
-
-  // Update judul di header cetak
-  var now = new Date();
+  var now   = new Date();
   var tglStr = now.toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   document.getElementById('printDate').textContent = tglStr;
   document.getElementById('printProg').textContent = prog + (tahun !== 'Semua Tahun' ? ' · ' + tahun : '');
   document.getElementById('thJudul').textContent   = 'DATA PESERTA – PKBM SINAR KASIH · ' + prog + (tahun !== 'Semua Tahun' ? ' · ' + tahun : '');
-
-  // Beri waktu render lalu print (browser akan buat PDF via Ctrl+P atau dialog)
   setTimeout(function(){ window.print(); }, 200);
 }
 
@@ -1492,7 +1502,6 @@ function simpanUser() {
   var role     = document.getElementById('mu_role').value;
   var errEl    = document.getElementById('modalUserErr');
   errEl.style.display = 'none';
-
   if (editUserRow === null) {
     if (!username || !nama || !password) {
       errEl.textContent = '❌ Semua field wajib diisi untuk user baru.';
@@ -1501,14 +1510,12 @@ function simpanUser() {
   } else {
     if (!nama) { errEl.textContent = '❌ Nama lengkap tidak boleh kosong.'; errEl.style.display = 'block'; return; }
   }
-
   document.getElementById('btnSimpanUser').disabled = true;
   var userData = { username: username, nama: nama, password: password, role: role };
   var action   = editUserRow === null ? 'tambahUser' : 'editUser';
   var params   = editUserRow === null
     ? { token: SESSION_TOKEN, userData: userData }
     : { token: SESSION_TOKEN, rowIndex: editUserRow, userData: userData };
-
   api(action, params)
     .then(function(res) {
       document.getElementById('btnSimpanUser').disabled = false;
@@ -1554,44 +1561,18 @@ function toast(msg, type) {
 }
 
 // ═══════════════════════════════════════
-//  WILAYAH INDONESIA — Emsifa API (gratis, tanpa API key)
+//  WILAYAH INDONESIA
+//  Emsifa API (gratis, tanpa API key)
 //  https://emsifa.github.io/api-wilayah-indonesia
 //
-//  PENTING — cara nilai disimpan:
-//  • Provinsi  : option.value = id provinsi  → nama diambil via prov.text  ✅
-//  • Kabupaten : option.value = id kabupaten → nama diambil via kab.text   ✅
-//  • Kecamatan : option.value = NAMA kecamatan langsung                    ✅
-//                option.dataset.id = id kecamatan (untuk fetch desa)
-//  • Desa      : option.value = NAMA desa langsung                         ✅
-//
-//  simpanForm() sudah memakai: prov.text, kab.text, kec (value), desa (value)
-//  Jadi sistem ini 100% kompatibel tanpa ubah simpanForm().
+//  ✅ PENINGKATAN v2:
+//  • Kabupaten Sulawesi Selatan: EMBED OFFLINE (instan, tanpa internet)
+//  • Kabupaten provinsi lain: fetch emsifa API (seperti semula)
+//  • Auto-select default: Sulawesi Selatan → PINRANG (sesuai lokasi PKBM)
+//  • Kecamatan & desa: tetap fetch emsifa API (kompatibel)
 // ═══════════════════════════════════════
 
-// ✅ Data provinsi di-embed — tidak perlu fetch, langsung muncul tanpa internet
-var DATA_PROVINSI = [
-  {id:'11',name:'ACEH'},{id:'12',name:'SUMATERA UTARA'},{id:'13',name:'SUMATERA BARAT'},
-  {id:'14',name:'RIAU'},{id:'15',name:'JAMBI'},{id:'16',name:'SUMATERA SELATAN'},
-  {id:'17',name:'BENGKULU'},{id:'18',name:'LAMPUNG'},{id:'19',name:'KEPULAUAN BANGKA BELITUNG'},
-  {id:'21',name:'KEPULAUAN RIAU'},{id:'31',name:'DKI JAKARTA'},{id:'32',name:'JAWA BARAT'},
-  {id:'33',name:'JAWA TENGAH'},{id:'34',name:'DI YOGYAKARTA'},{id:'35',name:'JAWA TIMUR'},
-  {id:'36',name:'BANTEN'},{id:'51',name:'BALI'},{id:'52',name:'NUSA TENGGARA BARAT'},
-  {id:'53',name:'NUSA TENGGARA TIMUR'},{id:'61',name:'KALIMANTAN BARAT'},
-  {id:'62',name:'KALIMANTAN TENGAH'},{id:'63',name:'KALIMANTAN SELATAN'},
-  {id:'64',name:'KALIMANTAN TIMUR'},{id:'65',name:'KALIMANTAN UTARA'},
-  {id:'71',name:'SULAWESI UTARA'},{id:'72',name:'SULAWESI TENGAH'},
-  {id:'73',name:'SULAWESI SELATAN'},{id:'74',name:'SULAWESI TENGGARA'},
-  {id:'75',name:'GORONTALO'},{id:'76',name:'SULAWESI BARAT'},
-  {id:'81',name:'MALUKU'},{id:'82',name:'MALUKU UTARA'},
-  {id:'91',name:'PAPUA BARAT'},{id:'92',name:'PAPUA'},
-  {id:'93',name:'PAPUA SELATAN'},{id:'94',name:'PAPUA TENGAH'},
-  {id:'95',name:'PAPUA PEGUNUNGAN'},{id:'96',name:'PAPUA BARAT DAYA'}
-];
-
-// Base URL emsifa — CDN GitHub Pages, gratis & tanpa API key
 var EMSIFA_BASE = 'https://emsifa.github.io/api-wilayah-indonesia/api';
-
-// Cache agar tidak fetch ulang data yang sama
 var _cacheWilayah = {};
 
 async function fetchWilayah(url) {
@@ -1616,27 +1597,26 @@ function muatProvinsi() {
   sel.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
   DATA_PROVINSI.forEach(function(p) {
     var o = document.createElement('option');
-    o.value = p.id;          // id provinsi → dipakai untuk fetch kabupaten
-    o.textContent = p.name;  // nama → disimpan via prov.text di simpanForm()
+    o.value = p.id;
+    o.textContent = p.name;
     sel.appendChild(o);
   });
-  // Auto-select Sulawesi Selatan (provinsi default PKBM)
-  Array.from(sel.options).forEach(function(o) {
-    if (o.textContent.includes('SULAWESI SELATAN')) {
-      sel.value = o.value;
-      muatKabupaten();
-    }
-  });
+  // ✅ Auto-select: Sulawesi Selatan (id=73)
+  sel.value = '73';
+  // Muat kabupaten Sulsel otomatis
+  muatKabupaten();
 }
 
-// ── muatKabupaten: fetch dari emsifa berdasarkan id provinsi ─────────────────
+// ── muatKabupaten ─────────────────────────────────────────────────────────────
+// ✅ Jika provinsi = Sulsel (id=73): pakai DATA_KAB_SULSEL (offline, instan)
+// ✅ Jika provinsi lain: fetch emsifa API
 async function muatKabupaten() {
   var provId = document.getElementById('f_provinsi').value;
   var kabEl  = document.getElementById('f_kabupaten');
   var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
 
-  // Reset semua dropdown di bawahnya
+  // Reset dropdown di bawahnya
   kabEl.innerHTML  = '<option value="">-- Pilih Kabupaten/Kota --</option>';
   kabEl.disabled   = true;
   kecEl.innerHTML  = '<option value="">-- Pilih Kabupaten Dulu --</option>';
@@ -1646,10 +1626,26 @@ async function muatKabupaten() {
 
   if (!provId) return;
 
+  // ✅ SULAWESI SELATAN: gunakan data embed (offline, instan)
+  if (provId === '73') {
+    DATA_KAB_SULSEL.forEach(function(k) {
+      var o = document.createElement('option');
+      o.value = k.id;       // ID kabupaten → dipakai fetch kecamatan
+      o.textContent = k.name; // nama → disimpan via kab.text
+      kabEl.appendChild(o);
+    });
+    kabEl.disabled = false;
+
+    // ✅ Auto-select: Kabupaten Pinrang (id=7315) — lokasi PKBM Sinar Kasih
+    kabEl.value = '7315';
+    muatKecamatan();
+    return;
+  }
+
+  // Provinsi lain: fetch dari emsifa
   kabEl.innerHTML = '<option value="">⏳ Memuat kabupaten…</option>';
   setWilayahLoading('loadKabupaten', true);
 
-  // Emsifa: /api/regencies/{id_provinsi}.json
   var url  = EMSIFA_BASE + '/regencies/' + provId + '.json';
   var data = await fetchWilayah(url);
 
@@ -1663,19 +1659,11 @@ async function muatKabupaten() {
 
   data.forEach(function(k) {
     var o = document.createElement('option');
-    o.value = k.id;          // id kabupaten → dipakai untuk fetch kecamatan
-    o.textContent = k.name;  // nama → disimpan via kab.text di simpanForm()
+    o.value = k.id;
+    o.textContent = k.name;
     kabEl.appendChild(o);
   });
   kabEl.disabled = false;
-
-  // Auto-select Toraja Utara jika tersedia
-  Array.from(kabEl.options).forEach(function(o) {
-    if (o.textContent.toUpperCase().includes('TORAJA UTARA')) {
-      kabEl.value = o.value;
-      muatKecamatan();
-    }
-  });
 }
 
 // ── muatKecamatan: fetch dari emsifa berdasarkan id kabupaten ────────────────
@@ -1694,7 +1682,6 @@ async function muatKecamatan() {
   kecEl.innerHTML = '<option value="">⏳ Memuat kecamatan…</option>';
   setWilayahLoading('loadKecamatan', true);
 
-  // Emsifa: /api/districts/{id_kabupaten}.json
   var url  = EMSIFA_BASE + '/districts/' + kabId + '.json';
   var data = await fetchWilayah(url);
 
@@ -1708,24 +1695,22 @@ async function muatKecamatan() {
 
   data.forEach(function(k) {
     var o = document.createElement('option');
-    // ✅ value = NAMA kecamatan — langsung disimpan oleh simpanForm() via kec = f_kec.value
+    // value = NAMA kecamatan — langsung disimpan oleh simpanForm()
     o.value = k.name;
     o.textContent = k.name;
-    // Simpan id di data-id agar muatDesa() bisa fetch desa
+    // Simpan id di data-id untuk fetch desa
     o.dataset.id = k.id;
     kecEl.appendChild(o);
   });
   kecEl.disabled = false;
-  // Pastikan onchange terpasang ke muatDesa
   kecEl.onchange = muatDesa;
 }
 
-// ── muatDesa: fetch dari emsifa berdasarkan id kecamatan (dari data-id) ──────
+// ── muatDesa: fetch dari emsifa berdasarkan id kecamatan ─────────────────────
 async function muatDesa() {
   var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
 
-  // Ambil id kecamatan dari dataset option yang terpilih
   var selOpt = kecEl.options[kecEl.selectedIndex];
   var kecId  = selOpt ? selOpt.dataset.id : '';
 
@@ -1737,7 +1722,6 @@ async function muatDesa() {
   desaEl.innerHTML = '<option value="">⏳ Memuat desa…</option>';
   setWilayahLoading('loadDesa', true);
 
-  // Emsifa: /api/villages/{id_kecamatan}.json
   var url  = EMSIFA_BASE + '/villages/' + kecId + '.json';
   var data = await fetchWilayah(url);
 
@@ -1751,7 +1735,7 @@ async function muatDesa() {
 
   data.forEach(function(d) {
     var o = document.createElement('option');
-    // ✅ value = NAMA desa — langsung disimpan oleh simpanForm() via desa = f_desa.value
+    // value = NAMA desa — langsung disimpan oleh simpanForm()
     o.value = d.name;
     o.textContent = d.name;
     desaEl.appendChild(o);
