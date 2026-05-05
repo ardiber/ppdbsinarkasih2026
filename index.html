@@ -16,7 +16,6 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-    /* HEADER */
     .header{background:linear-gradient(135deg,#0a0f1e 0%,#111827 60%,#1a2340 100%);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 24px rgba(0,0,0,.5);border-bottom:1px solid rgba(212,146,42,.2);}
     .header-logo{width:52px;height:52px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--gold),0 4px 14px rgba(212,146,42,.35);}
     .header-logo img{width:100%;height:100%;object-fit:contain;padding:2px;}
@@ -31,28 +30,23 @@
     .btn-logout{padding:6px 14px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:8px;color:#fca5a5;font-family:inherit;font-size:.75rem;font-weight:700;cursor:pointer;transition:background .2s;flex-shrink:0;}
     .btn-logout:hover{background:rgba(239,68,68,.28);}
 
-    /* TABS */
     .tabs{display:flex;background:var(--bg2);border-bottom:2px solid var(--border);padding:0 20px;gap:2px;}
     .tab{padding:13px 20px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;letter-spacing:.02em;}
     .tab.active{color:var(--gold-lt);border-bottom-color:var(--gold);}
     #tabUser{display:none;}
 
-    /* MAIN */
     .main{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
     .panel{display:none;}.panel.active{display:block;}
 
-    /* STATS */
     .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;}
     .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;text-align:center;box-shadow:var(--shadow);}
     .stat .n{font-size:1.8rem;font-weight:800;line-height:1;}
     .stat .l{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:4px;}
     .stat.g .n{color:var(--gold);}.stat.s .n{color:var(--success);}.stat.r .n{color:var(--danger);}.stat.b .n{color:var(--info);}
 
-    /* CARD */
     .card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:28px 28px 24px;margin-bottom:20px;}
     .card-head{display:flex;align-items:center;gap:8px;font-size:1rem;font-weight:800;color:var(--gold-lt);margin-bottom:22px;padding-bottom:12px;border-bottom:1px solid var(--border);}
 
-    /* FORM GRID */
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;}
     .full{grid-column:1/-1;}
     .field label{display:block;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px;}
@@ -65,22 +59,17 @@
     #f_program{border-color:rgba(212,146,42,.35);}
     #f_program:focus{border-color:var(--gold);}
 
-    /* NISN field info */
     .nisn-info{font-size:.72rem;color:var(--gold-lt);margin-top:5px;padding:5px 8px;background:rgba(212,146,42,.08);border-radius:6px;border-left:3px solid var(--gold);}
-    .field-hidden{display:none;}
 
-    /* SECTION DIVIDER IN FORM */
     .form-section{grid-column:1/-1;margin-top:10px;margin-bottom:4px;}
     .form-section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);display:flex;align-items:center;gap:8px;padding:8px 0;}
     .form-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
 
-    /* RADIO */
     .rgroup{display:flex;gap:10px;}
     .rlabel{flex:1;display:flex;align-items:center;gap:8px;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.9rem;background:var(--bg3);color:var(--text);transition:all .18s;user-select:none;}
     .rlabel input[type=radio]{width:16px;height:16px;accent-color:var(--gold);}
     .rlabel:has(input:checked){border-color:var(--gold);background:#2a1f0a;font-weight:700;color:var(--gold-lt);}
 
-    /* NIK */
     .nik-wrapper{position:relative;}
     .nik-status{display:none;margin-top:7px;padding:9px 13px;border-radius:8px;font-size:.82rem;font-weight:600;line-height:1.45;animation:fadeIn .25s ease;}
     @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
@@ -95,7 +84,9 @@
     .mini-spin{width:14px;height:14px;border:2px solid #c5cce8;border-top-color:#2c3e8a;border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0;}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* FOTO UPLOAD */
+    /* offline-badge untuk Tana Toraja & Toraja Utara */
+    .offline-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#86efac;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle;}
+
     .foto-upload-area{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg3);position:relative;}
     .foto-upload-area:hover{border-color:var(--gold);background:rgba(212,146,42,.05);}
     .foto-upload-area.dragover{border-color:var(--gold);background:rgba(212,146,42,.1);transform:scale(1.01);}
@@ -112,7 +103,6 @@
     .foto-uploading{display:none;align-items:center;gap:8px;margin-top:8px;font-size:.8rem;color:var(--gold-lt);}
     .foto-url-display{display:none;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:6px;font-size:.75rem;color:#86efac;}
 
-    /* BUTTONS */
     .btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
     .btn{padding:10px 24px;border-radius:8px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer;border:none;transition:transform .15s,box-shadow .15s,opacity .15s;letter-spacing:.03em;}
     .btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.35);}
@@ -124,7 +114,6 @@
     .btn-info{background:#1d4ed8;color:#fff;}.btn-warning{background:#92400e;color:#fef3c7;}
     .btn-sm{padding:7px 14px;font-size:.78rem;}
 
-    /* TOOLBAR */
     .toolbar{display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;}
     .toolbar input,.toolbar select{padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;outline:none;background:var(--bg3);color:var(--text);transition:border-color .2s;}
     .toolbar input{flex:1;min-width:200px;}
@@ -132,12 +121,10 @@
     .toolbar input::placeholder{color:#3d4a5c;}
     .toolbar input:focus,.toolbar select:focus{border-color:var(--gold);}
 
-    /* YEAR SELECTOR */
     .year-selector{display:flex;align-items:center;gap:8px;}
     .year-selector label{font-size:.78rem;color:var(--muted);font-weight:600;white-space:nowrap;}
     .year-selector select{min-width:120px!important;}
 
-    /* TABLE */
     .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);box-shadow:var(--shadow);}
     table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:1400px;}
     thead{background:#0c1628;color:#fff;}
@@ -170,19 +157,16 @@
     .td-hp{font-size:.75rem;color:#7dd3fc;}
     .td-email{font-size:.72rem;color:#a5b4fc;}
 
-    /* LOADING */
     #loading{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9000;align-items:center;justify-content:center;}
     #loading.on{display:flex;}
     .spinner{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px 36px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.5);}
     .spin{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
     .spinner p{font-size:.88rem;color:var(--muted);font-weight:600;}
 
-    /* TOAST */
     #toast{position:fixed;bottom:24px;right:24px;padding:12px 22px;border-radius:10px;font-weight:700;font-size:.88rem;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,.18);transform:translateY(80px);opacity:0;transition:all .3s;z-index:9999;max-width:340px;}
     #toast.show{transform:translateY(0);opacity:1;}
     #toast.ok{background:var(--success);}#toast.err{background:var(--danger);}
 
-    /* MODAL */
     .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:5000;align-items:center;justify-content:center;}
     .modal-bg.on{display:flex;}
     .modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px 30px;max-width:480px;width:94%;box-shadow:0 12px 48px rgba(0,0,0,.5);}
@@ -197,12 +181,6 @@
     .modal-field input::placeholder{color:#3d4a5c;}
     .modal-field select option{background:var(--bg3);color:var(--text);}
 
-    /* FOTO MODAL VIEWER */
-    #modalFoto .modal{max-width:600px;text-align:center;}
-    #modalFotoImg{width:100%;max-height:450px;object-fit:contain;border-radius:8px;margin-bottom:12px;}
-    #modalFotoNama{font-size:.85rem;color:var(--muted);}
-
-    /* LOGIN */
     #loginPage{display:flex;min-height:100vh;width:100%;position:relative;}
     .login-bg{position:fixed;inset:0;z-index:0;}
     .login-bg img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -243,7 +221,6 @@
     .gedung-card-label{padding:10px 16px;font-size:.73rem;font-weight:700;color:var(--gold-lt);background:linear-gradient(90deg,rgba(13,33,55,.97),rgba(10,26,16,.97));letter-spacing:.04em;display:flex;align-items:center;gap:6px;}
     #appPage{display:none;}
 
-    /* USER MANAGEMENT */
     .user-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);box-shadow:var(--shadow);}
     .user-table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:700px;}
     .user-table thead{background:#0c1628;}
@@ -257,9 +234,6 @@
     .role-user{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.25);}
     .user-actions{display:flex;gap:6px;}
 
-    /* ═══════════════════════════════════════
-       PRINT STYLES
-    ═══════════════════════════════════════ */
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       body { background: #fff !important; color: #000 !important; font-size: 9pt !important; }
@@ -494,7 +468,10 @@
           </div>
 
           <div class="field">
-            <label>Kecamatan <span class="req">*</span></label>
+            <label>
+              Kecamatan <span class="req">*</span>
+              <span class="offline-badge" id="offlineKecBadge" style="display:none;">⚡ Offline</span>
+            </label>
             <div style="position:relative;">
               <select id="f_kec" onchange="muatDesa()" disabled>
                 <option value="">-- Pilih Kabupaten Dulu --</option>
@@ -504,7 +481,10 @@
           </div>
 
           <div class="field">
-            <label>Desa / Kelurahan <span class="req">*</span></label>
+            <label>
+              Desa / Kelurahan <span class="req">*</span>
+              <span class="offline-badge" id="offlineDesaBadge" style="display:none;">⚡ Offline</span>
+            </label>
             <div style="position:relative;">
               <select id="f_desa" disabled><option value="">-- Pilih Kecamatan Dulu --</option></select>
               <div id="loadDesa" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);"><div class="mini-spin" style="border-top-color:var(--gold);"></div></div>
@@ -768,7 +748,7 @@
 <div class="modal-bg" id="modalFoto">
   <div class="modal" style="max-width:600px;">
     <h3 class="info">🖼 Foto Peserta</h3>
-    <img src="" alt="Foto Peserta" id="modalFotoImg"/>
+    <img src="" alt="Foto Peserta" id="modalFotoImg" style="width:100%;max-height:450px;object-fit:contain;border-radius:8px;margin-bottom:12px;"/>
     <p id="modalFotoNama" style="margin-bottom:16px;"></p>
     <div class="btn-row">
       <button class="btn btn-outline" onclick="tutupModal('modalFoto')">Tutup</button>
@@ -795,7 +775,7 @@ var fotoFileExt   = 'jpg';
 var fotoUrl       = null;
 
 // ═══════════════════════════════════════
-//  DATA PROVINSI (embed, instan, tanpa internet)
+//  DATA PROVINSI (embed offline)
 // ═══════════════════════════════════════
 var DATA_PROVINSI = [
   {id:'11',name:'ACEH'},{id:'12',name:'SUMATERA UTARA'},{id:'13',name:'SUMATERA BARAT'},
@@ -817,10 +797,7 @@ var DATA_PROVINSI = [
 ];
 
 // ═══════════════════════════════════════
-//  ✅ DATA KABUPATEN SULAWESI SELATAN
-//  Embed offline — 24 kab/kota lengkap
-//  ID sesuai standar emsifa / Kemendagri
-//  Provinsi Sulsel = id '73'
+//  DATA KABUPATEN SULAWESI SELATAN (embed offline)
 // ═══════════════════════════════════════
 var DATA_KAB_SULSEL = [
   {id:'7301', name:'KABUPATEN KEPULAUAN SELAYAR'},
@@ -848,6 +825,193 @@ var DATA_KAB_SULSEL = [
   {id:'7372', name:'KOTA PAREPARE'},
   {id:'7373', name:'KOTA PALOPO'}
 ];
+
+// ═══════════════════════════════════════
+//  ✅ DATA KECAMATAN & DESA — TANA TORAJA (embed offline)
+//  19 Kecamatan · Sumber: Wikipedia & organisasi.org
+// ═══════════════════════════════════════
+var DATA_WILAYAH_TANA_TORAJA = {
+  'BITTUANG': [
+    'BALLA','BAU','BITTUANG','BURASIA','BUTTU LIMBONG','KANDUA',
+    'KOLE PALIAN','LE TEK','PALI','PATONGLOAN','REMBO-REMBO',
+    'SANDANA','SASAK','SE SENG','TIROAN'
+  ],
+  'BONGGAKARADENG': [
+    'BAU','BAU SELATAN','BUA KAYU','MAPPA','POTON','RATTE BUTTU'
+  ],
+  'GANDANG BATU SILLANAN': [
+    'BENTENG DEATA','BENTENGAMBESO','BUNTU LIMBONG','BUNTU TABANG',
+    'GANDANGBATU','GARASSIK','KADUAJA','MEBALI','PEMANUKAN',
+    'PERINDINGAN','SALUBARANI','SILLANAN'
+  ],
+  'KURRA': [
+    'BAMBALU','LIMBONG SANGPOLO','LIPUNGAN TANETE','MAROSON',
+    'RANTE KURRA','RANTE LIMBONG'
+  ],
+  'MAKALE': [
+    'ARIANG','BOMBONGAN','LAMUNAN','PANTAN','TARONGKO',
+    'BATU PAPAN','MANGGAU','BOTANG','BUNTU BURAKE',
+    'KAMALI PENTALLUAN','LAPANDAN','LEA','RANTE',
+    'TAMPO MAKALE','TONDON MAMULLU'
+  ],
+  'MAKALE SELATAN': [
+    'BONE BUNTU SISONG','PABUARAN','PASANG','PATEKE',
+    'RANDAN BATU','SANDABILIK','TIROMANDA','TO SAPAN'
+  ],
+  'MAKALE UTARA': [
+    'BUNGIN','LEMO','LION TONDOK IRING','SARIRA','TAMBUNAN'
+  ],
+  'MALIMBONG BALEPE': [
+    'KOLE BAREBATU','KOLE SAWANGAN','LEMO MENDURUK',
+    'LEPPAN','MALIMBONG'
+  ],
+  'MAPPAK': [
+    'BUTANG','DEWATA','KONDO DEWATA','MIALLO',
+    'SANGPEPARIKAN','TANETE'
+  ],
+  'MASANDA': [
+    'BELAU','BELAU UTARA','KADUNGDUNG','PAKU',
+    'PALIORONG','PONDINGAO','RATTE','SESE SALU'
+  ],
+  'MENGKENDEK': [
+    'BUNTU DATU','BUNTU TANGTI','GASING','KANDORA',
+    'KE PE TINORING','LEMO','MARINDING','PA TENGKO','PAKALA',
+    'PALIPU','RANDANAN','RANTE KALUA','RANTEDADA',
+    'SIMBUANG','TAMPO','TENGAN','ULUWAY','ULUWAY BARAT'
+  ],
+  'RANO': [
+    'RANO','RANO TENGAH','RANO TIMUR','RANO UTARA','RUMANDAN'
+  ],
+  'REMBON': [
+    'BANGA','BATU SURA','BUA TARRUNG','BURI','KAYU OSING',
+    'LIMBONG','MAROSON','PALESAN','REMBON','SARAPEANG',
+    'TALION','TO PAO','ULLIN'
+  ],
+  'SALUPUTTI': [
+    'BALEPE','BATU TIAKKA','KOLE SAWANGAN','LEMOMENDURUK',
+    'MALIMBONG','PATTAN ULUSALU','RATTE TALONGE',
+    'REA TULAK LANGI','SALU','SALU BORONAN','SALU TANDUNG'
+  ],
+  'SANGALLA': [
+    'BULIAN MASSABU','BUNTU MASAKKE','KAERO',
+    'TONGKO SARAPUNG','TURUNAN'
+  ],
+  'SANGALLA SELATAN': [
+    'BATUALU','BATUALU SELATAN','RANTE ALANG',
+    'RARU SIBUNUAN','TOKESAN'
+  ],
+  'SANGALLA UTARA': [
+    'BEBO','LEATUNG','LEATUNG MATALLO',
+    'RATELE BI KAMBISA','SALUALLO','TUMBANG DATU'
+  ],
+  'SIMBUANG': [
+    'MAKKODO','PONGBEMBE','PUANG BEMBE MESAKADA',
+    'SIMA','SIMBUANG','SIMBUANG BATUALLO'
+  ],
+  'RANTETAYO': [
+    'PADANGIRING'
+  ]
+};
+
+// ═══════════════════════════════════════
+//  ✅ DATA KECAMATAN & DESA — TORAJA UTARA (embed offline)
+//  22 Kecamatan · Sumber: Wikipedia & organisasi.org
+// ═══════════════════════════════════════
+var DATA_WILAYAH_TORAJA_UTARA = {
+  'AWAN RANTE KARUA': [
+    'AWAN','BATU LOTONG','BUNTU KARUA','LONDONG BIANG'
+  ],
+  'BALUSU': [
+    'AWAK KAWASIK','BALUSU','BALUSU AO GADING',
+    'BALUSU BANGUN LIPU','KARUA','PALANGI','TAGARI'
+  ],
+  'BANGKELEKILA': [
+    'BANGKELEKILA','BATU LIMBONG','TAMPAN BONGA','TOYASA AKUNG'
+  ],
+  'BARUPPU': [
+    'BARUPPU BENTENG BATU','BARUPPU PARODO',
+    'BARUPPU SELATAN','BARUPPU UTARA'
+  ],
+  'BUNTAO': [
+    'ISSONG KALUA','MISA BA BANA','RINDING KILA BALABATU',
+    'SAPAN KUA KUA','TALLANG SURA','TONGKONAN BASSE'
+  ],
+  'BUNTU PEPASAN': [
+    'BATU BUSA','BUNTU MINANGA','PANGKUNG BATU','PAONGANAN',
+    'PARANDANGAN','PENGKAROAN MANUK','PONGLU','PULU PULU',
+    'RANTE UMA','ROROAN BARA-BARA','SAPAN','SARAMBU',
+    'TALIMBANGAN'
+  ],
+  'DENDE PIONGAN NAPO': [
+    'BUNTU TAGARI','DENDE','KAPOLANG','MA DONG',
+    'PAKU','PARINDING','PASANG','PIONGAN'
+  ],
+  'KAPALA PITU': [
+    'BENTENG KADO','BENTENG MAMULU','KANTUN POYA',
+    'KAPALA PITU','POLO PADANG','SIKUKU'
+  ],
+  'KESU': [
+    'ANGIN ANGIN','BA TAN','PANTANAKAN LOLO','RINDING BATU',
+    'SANGBUA','TADONGKON','TALLULOLO'
+  ],
+  'NANGGALA': [
+    'BASOKAN','KARRE LIMBONG','KARRE PENANIAN','LILIKIRA',
+    'MAKKUAN PARE','NANGGALA','NANGGALA SANGPIAK SALU',
+    'NANNA NANGGALA','PITUNG PENANIAN','RANTE',
+    'TANDUNG NANGGALA'
+  ],
+  'RANTEBUA': [
+    'BOKIN','BUANGIN','MAKUAN PARE','PITUNG PENANIAN',
+    'RANTEBUA','RANTEBUA SANGGALAGI','RANTEBUA SUMALU'
+  ],
+  'RANTEPAO': [
+    'MALANGO','PASELE','RANTEPAO','LAANG TANDUK',
+    'MENTIRO TIKU','KARASSIK','LIMBONG','PENANIAN',
+    'RANTE PASELE','SALOSO','SINGKI'
+  ],
+  'RANTETAYO': [
+    'MADANDAN','PADANG IRING','RANTETAYO','TAPPARAN',
+    'TAPPARAN UTARA','TONGLO'
+  ],
+  'RINDINGALLO': [
+    'AMPANG BATU','BULU LANGKAN','BUNTU BATU','LEMPOPOTON',
+    'LIMBONG MALTING','LO KO URU TANETE BATU','MAITING',
+    'PANGALA','PANGALA UTARA','RINDINGALLO'
+  ],
+  'SA DAN': [
+    'SA DAN ANDULAN','SA DAN BALLOPASANGE','SA DAN LIKU LAMBE',
+    'SA DAN MALIMBONG','SA DAN MATALLO','SA DAN PEBULIAN',
+    'SA DAN PESONDONGAN','SA DAN SANGKAROPI',
+    'SA DAN TIROALLO','SA DAN ULUSALU'
+  ],
+  'SANGGALANGI': [
+    'BUNTU LA BO','LA BO','PAEPALEAN','PATA PADANG',
+    'TALLUNG PENANIAN','TANDUNG LA BO'
+  ],
+  'SESEAN': [
+    'BORI','BORI LOMBONGAN','BORI RANTE LETOK','BUNTULOBO',
+    'DERI','PALAWA','PANGLI PALAWA','PANGLI SELATAN','PARINDING'
+  ],
+  'SESEAN SULOARA': [
+    'LANDORUNDUN','LEMPO','SESEAN MATALLO','SULOARA','TONGA RIU'
+  ],
+  'SOPAI': [
+    'SALU','SALU RANTE','LANGDA','MARANTE',
+    'NONONGAN SELATAN','NONONGAN UTARA','SALU SOPAI','TOMBANG LANGDA'
+  ],
+  'TALLUNGLIPU': [
+    'BUNTU TALLUNGLIPU','RANTEPAKU TALLUNGLIPU','TAGARI TALLUNGLIPU',
+    'TALLUNGLIPU','TALLUNGLIPU MATALLO','TAMPO TALLUNGLIPU',
+    'TANTANAN TALLUNGLIPU'
+  ],
+  'TIKALA': [
+    'BUNTU BARANA','BUNTU BATU','EMBATAU','LANDORUNDUN',
+    'PANGDEN','SEREALE','SULOARA','TIKALA'
+  ],
+  'TONDON': [
+    'TONDON','TONDON LANGI','TONDON MATALLO','TONDON SIBA TA'
+  ]
+};
 
 // ═══════════════════════════════════════
 //  TAHUN DINAMIS
@@ -890,7 +1054,7 @@ function onProgramChange() {
 }
 
 // ═══════════════════════════════════════
-//  FOTO NAMA FILE OTOMATIS
+//  FOTO
 // ═══════════════════════════════════════
 function sanitasiNamaFile(nama) {
   return nama.toLowerCase()
@@ -1124,7 +1288,7 @@ async function uploadFotoKeServer() {
 }
 
 // ═══════════════════════════════════════
-//  FORM INPUT
+//  FORM
 // ═══════════════════════════════════════
 function autoUmur() {
   var tgl = document.getElementById('f_ttl').value;
@@ -1156,6 +1320,8 @@ function resetForm() {
   desaEl.disabled  = true;
   document.querySelectorAll('input[name="jk"]').forEach(function(r){ r.checked = false; });
   document.getElementById('field_nisn').style.display = 'none';
+  document.getElementById('offlineKecBadge').style.display  = 'none';
+  document.getElementById('offlineDesaBadge').style.display = 'none';
   hapusFoto({ stopPropagation: function(){} });
   resetNikStatus();
 }
@@ -1561,15 +1727,26 @@ function toast(msg, type) {
 }
 
 // ═══════════════════════════════════════
+//  ═══════════════════════════════════════
 //  WILAYAH INDONESIA
-//  Emsifa API (gratis, tanpa API key)
-//  https://emsifa.github.io/api-wilayah-indonesia
 //
-//  ✅ PENINGKATAN v2:
-//  • Kabupaten Sulawesi Selatan: EMBED OFFLINE (instan, tanpa internet)
-//  • Kabupaten provinsi lain: fetch emsifa API (seperti semula)
-//  • Auto-select default: Sulawesi Selatan → PINRANG (sesuai lokasi PKBM)
-//  • Kecamatan & desa: tetap fetch emsifa API (kompatibel)
+//  ARSITEKTUR DATA:
+//  ─────────────────────────────────────
+//  • Provinsi          → EMBED (semua, offline)
+//  • Kabupaten Sulsel  → EMBED (24 kab/kota, offline)
+//  • Kabupaten lain    → Emsifa API (online)
+//
+//  • Kecamatan Tana Toraja  → EMBED OFFLINE ✅
+//  • Kecamatan Toraja Utara → EMBED OFFLINE ✅
+//  • Kecamatan lainnya      → Emsifa API (online)
+//
+//  • Desa Tana Toraja   → EMBED OFFLINE ✅
+//  • Desa Toraja Utara  → EMBED OFFLINE ✅
+//  • Desa lainnya       → Emsifa API (online)
+//
+//  ID KABUPATEN (Kemendagri):
+//    7318 = KABUPATEN TANA TORAJA
+//    7325 = KABUPATEN TORAJA UTARA
 // ═══════════════════════════════════════
 
 var EMSIFA_BASE = 'https://emsifa.github.io/api-wilayah-indonesia/api';
@@ -1591,7 +1768,18 @@ function setWilayahLoading(id, on) {
   if (el) el.style.display = on ? 'block' : 'none';
 }
 
-// ── muatProvinsi: dari data embed, instan tanpa internet ─────────────────────
+// ── Helper: apakah kabupaten pakai data offline? ──────────────────────────────
+function isOfflineKab(kabId) {
+  return kabId === '7318' || kabId === '7325';
+}
+
+function getDataKecOffline(kabId) {
+  if (kabId === '7318') return DATA_WILAYAH_TANA_TORAJA;
+  if (kabId === '7325') return DATA_WILAYAH_TORAJA_UTARA;
+  return null;
+}
+
+// ── muatProvinsi ──────────────────────────────────────────────────────────────
 function muatProvinsi() {
   var sel = document.getElementById('f_provinsi');
   sel.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
@@ -1601,72 +1789,63 @@ function muatProvinsi() {
     o.textContent = p.name;
     sel.appendChild(o);
   });
-  // ✅ Auto-select: Sulawesi Selatan (id=73)
+  // Auto-select: Sulawesi Selatan
   sel.value = '73';
-  // Muat kabupaten Sulsel otomatis
   muatKabupaten();
 }
 
 // ── muatKabupaten ─────────────────────────────────────────────────────────────
-// ✅ Jika provinsi = Sulsel (id=73): pakai DATA_KAB_SULSEL (offline, instan)
-// ✅ Jika provinsi lain: fetch emsifa API
 async function muatKabupaten() {
   var provId = document.getElementById('f_provinsi').value;
   var kabEl  = document.getElementById('f_kabupaten');
   var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
 
-  // Reset dropdown di bawahnya
   kabEl.innerHTML  = '<option value="">-- Pilih Kabupaten/Kota --</option>';
   kabEl.disabled   = true;
   kecEl.innerHTML  = '<option value="">-- Pilih Kabupaten Dulu --</option>';
   kecEl.disabled   = true;
   desaEl.innerHTML = '<option value="">-- Pilih Kecamatan Dulu --</option>';
   desaEl.disabled  = true;
+  document.getElementById('offlineKecBadge').style.display  = 'none';
+  document.getElementById('offlineDesaBadge').style.display = 'none';
 
   if (!provId) return;
 
-  // ✅ SULAWESI SELATAN: gunakan data embed (offline, instan)
+  // Sulawesi Selatan: embed offline
   if (provId === '73') {
     DATA_KAB_SULSEL.forEach(function(k) {
       var o = document.createElement('option');
-      o.value = k.id;       // ID kabupaten → dipakai fetch kecamatan
-      o.textContent = k.name; // nama → disimpan via kab.text
+      o.value = k.id;
+      o.textContent = k.name;
       kabEl.appendChild(o);
     });
     kabEl.disabled = false;
-
-    // ✅ Auto-select: Kabupaten Pinrang (id=7315) — lokasi PKBM Sinar Kasih
+    // Auto-select: Kabupaten Pinrang
     kabEl.value = '7315';
     muatKecamatan();
     return;
   }
 
-  // Provinsi lain: fetch dari emsifa
+  // Provinsi lain: fetch emsifa
   kabEl.innerHTML = '<option value="">⏳ Memuat kabupaten…</option>';
   setWilayahLoading('loadKabupaten', true);
-
   var url  = EMSIFA_BASE + '/regencies/' + provId + '.json';
   var data = await fetchWilayah(url);
-
   setWilayahLoading('loadKabupaten', false);
   kabEl.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
-
-  if (!data) {
-    toast('⚠️ Gagal memuat kabupaten/kota. Cek koneksi internet.', 'err');
-    return;
-  }
-
+  if (!data) { toast('⚠️ Gagal memuat kabupaten/kota. Cek koneksi internet.', 'err'); return; }
   data.forEach(function(k) {
     var o = document.createElement('option');
-    o.value = k.id;
-    o.textContent = k.name;
+    o.value = k.id; o.textContent = k.name;
     kabEl.appendChild(o);
   });
   kabEl.disabled = false;
 }
 
-// ── muatKecamatan: fetch dari emsifa berdasarkan id kabupaten ────────────────
+// ── muatKecamatan ─────────────────────────────────────────────────────────────
+// ✅ TANA TORAJA (7318) & TORAJA UTARA (7325): gunakan data embed offline
+// ✅ Kabupaten lain: fetch emsifa API
 async function muatKecamatan() {
   var kabId  = document.getElementById('f_kabupaten').value;
   var kecEl  = document.getElementById('f_kec');
@@ -1676,29 +1855,41 @@ async function muatKecamatan() {
   kecEl.disabled   = true;
   desaEl.innerHTML = '<option value="">-- Pilih Kecamatan Dulu --</option>';
   desaEl.disabled  = true;
+  document.getElementById('offlineKecBadge').style.display  = 'none';
+  document.getElementById('offlineDesaBadge').style.display = 'none';
 
   if (!kabId) return;
 
-  kecEl.innerHTML = '<option value="">⏳ Memuat kecamatan…</option>';
-  setWilayahLoading('loadKecamatan', true);
-
-  var url  = EMSIFA_BASE + '/districts/' + kabId + '.json';
-  var data = await fetchWilayah(url);
-
-  setWilayahLoading('loadKecamatan', false);
-  kecEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-
-  if (!data) {
-    toast('⚠️ Gagal memuat kecamatan. Cek koneksi internet.', 'err');
+  // ✅ DATA OFFLINE: Tana Toraja atau Toraja Utara
+  if (isOfflineKab(kabId)) {
+    var dataOffline = getDataKecOffline(kabId);
+    var kecList = Object.keys(dataOffline).sort();
+    kecList.forEach(function(kecNama) {
+      var o = document.createElement('option');
+      o.value = kecNama;
+      o.textContent = kecNama;
+      o.dataset.offline = 'true';
+      kecEl.appendChild(o);
+    });
+    kecEl.disabled = false;
+    // Tampilkan badge offline
+    document.getElementById('offlineKecBadge').style.display = 'inline-flex';
+    // Kecamatan lain: muatDesa via event change
+    kecEl.onchange = muatDesa;
     return;
   }
 
+  // Kabupaten lain: fetch dari emsifa
+  kecEl.innerHTML = '<option value="">⏳ Memuat kecamatan…</option>';
+  setWilayahLoading('loadKecamatan', true);
+  var url  = EMSIFA_BASE + '/districts/' + kabId + '.json';
+  var data = await fetchWilayah(url);
+  setWilayahLoading('loadKecamatan', false);
+  kecEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+  if (!data) { toast('⚠️ Gagal memuat kecamatan. Cek koneksi internet.', 'err'); return; }
   data.forEach(function(k) {
     var o = document.createElement('option');
-    // value = NAMA kecamatan — langsung disimpan oleh simpanForm()
-    o.value = k.name;
-    o.textContent = k.name;
-    // Simpan id di data-id untuk fetch desa
+    o.value = k.name; o.textContent = k.name;
     o.dataset.id = k.id;
     kecEl.appendChild(o);
   });
@@ -1706,38 +1897,58 @@ async function muatKecamatan() {
   kecEl.onchange = muatDesa;
 }
 
-// ── muatDesa: fetch dari emsifa berdasarkan id kecamatan ─────────────────────
+// ── muatDesa ──────────────────────────────────────────────────────────────────
+// ✅ Tana Toraja / Toraja Utara: embed offline → instan tanpa internet
+// ✅ Kabupaten lain: fetch emsifa API
 async function muatDesa() {
+  var kabId  = document.getElementById('f_kabupaten').value;
   var kecEl  = document.getElementById('f_kec');
   var desaEl = document.getElementById('f_desa');
 
-  var selOpt = kecEl.options[kecEl.selectedIndex];
-  var kecId  = selOpt ? selOpt.dataset.id : '';
+  var kecNama  = kecEl.value;
+  var selOpt   = kecEl.options[kecEl.selectedIndex];
+  var isOffline = selOpt && selOpt.dataset.offline === 'true';
 
   desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
   desaEl.disabled  = true;
+  document.getElementById('offlineDesaBadge').style.display = 'none';
 
+  if (!kecNama) return;
+
+  // ✅ DATA OFFLINE: Tana Toraja atau Toraja Utara
+  if (isOffline || isOfflineKab(kabId)) {
+    var dataOffline = getDataKecOffline(kabId);
+    var desaList    = dataOffline[kecNama];
+    if (!desaList || !desaList.length) {
+      desaEl.innerHTML = '<option value="">– Tidak ada data –</option>';
+      return;
+    }
+    desaList.slice().sort().forEach(function(desaNama) {
+      var o = document.createElement('option');
+      o.value = desaNama;
+      o.textContent = desaNama;
+      desaEl.appendChild(o);
+    });
+    desaEl.disabled = false;
+    // Tampilkan badge offline
+    document.getElementById('offlineDesaBadge').style.display = 'inline-flex';
+    return;
+  }
+
+  // Kabupaten lain: fetch emsifa berdasarkan data-id kecamatan
+  var kecId = selOpt ? selOpt.dataset.id : '';
   if (!kecId) return;
 
   desaEl.innerHTML = '<option value="">⏳ Memuat desa…</option>';
   setWilayahLoading('loadDesa', true);
-
   var url  = EMSIFA_BASE + '/villages/' + kecId + '.json';
   var data = await fetchWilayah(url);
-
   setWilayahLoading('loadDesa', false);
   desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
-
-  if (!data) {
-    toast('⚠️ Gagal memuat desa/kelurahan. Cek koneksi internet.', 'err');
-    return;
-  }
-
+  if (!data) { toast('⚠️ Gagal memuat desa/kelurahan. Cek koneksi internet.', 'err'); return; }
   data.forEach(function(d) {
     var o = document.createElement('option');
-    // value = NAMA desa — langsung disimpan oleh simpanForm()
-    o.value = d.name;
-    o.textContent = d.name;
+    o.value = d.name; o.textContent = d.name;
     desaEl.appendChild(o);
   });
   desaEl.disabled = false;
