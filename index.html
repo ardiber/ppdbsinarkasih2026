@@ -1795,12 +1795,13 @@ function setWilayahLoading(id, on) {
 
 // ── Helper: apakah kabupaten pakai data offline? ──────────────────────────────
 function isOfflineKab(kabId) {
-  return kabId === '7318' || kabId === '7325';
+ return kabId === '7318' || kabId === '7326' || kabId === '3278'|| kabid === '';
 }
 
 function getDataKecOffline(kabId) {
   if (kabId === '7318') return DATA_WILAYAH_TANA_TORAJA;
-  if (kabId === '7325') return DATA_WILAYAH_TORAJA_UTARA;
+  if (kabId === '7326') return DATA_WILAYAH_TORAJA_UTARA;
+  if (kabId === '3278') return DATA_WILAYAH_KOTA_TASIKMALAYA;
   return null;
 }
 
