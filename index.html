@@ -1784,7 +1784,7 @@ function toast(msg, type) {
 }
 
 // ── API Wilayah (untuk provinsi non-Sulsel) ──────────────────────────────────
-var WILAYAH_BASE = 'https://wilayah.id/api';
+var WILAYAH_BASE = 'static/api/provinces.json';
 var _cacheWilayah = {};
 async function fetchWilayah(url) {
   if (_cacheWilayah[url]) return _cacheWilayah[url];
@@ -1856,7 +1856,7 @@ async function muatKabupaten() {
     });
     kabEl.disabled = false;
     // Auto-select: Kabupaten Pinrang
-    kabEl.value = '7315';
+    kabEl.value = '7326';
     muatKecamatan();
     return;
   }
