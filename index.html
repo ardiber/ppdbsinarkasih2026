@@ -819,8 +819,8 @@ var DATA_KAB_SULSEL = [
   {id:'7317', name:'KABUPATEN LUWU'},
   {id:'7318', name:'KABUPATEN TANA TORAJA'},
   {id:'7322', name:'KABUPATEN LUWU UTARA'},
-  {id:'7324', name:'KABUPATEN LUWU TIMUR'},
-  {id:'7325', name:'KABUPATEN TORAJA UTARA'},
+  {id:'7325', name:'KABUPATEN LUWU TIMUR'},
+  {id:'7326', name:'KABUPATEN TORAJA UTARA'},
   {id:'7371', name:'KOTA MAKASSAR'},
   {id:'7372', name:'KOTA PAREPARE'},
   {id:'7373', name:'KOTA PALOPO'}
@@ -1771,10 +1771,10 @@ function toast(msg, type) {
 //
 //  ID KABUPATEN (Kemendagri):
 //    7318 = KABUPATEN TANA TORAJA
-//    7325 = KABUPATEN TORAJA UTARA
+//    7326 = KABUPATEN TORAJA UTARA
 // ═══════════════════════════════════════
 
-var EMSIFA_BASE = 'https://emsifa.github.io/api-wilayah-indonesia/api';
+var WILAYAH_BASE = 'https://wilayah.id/api';
 var _cacheWilayah = {};
 
 async function fetchWilayah(url) {
@@ -1782,9 +1782,11 @@ async function fetchWilayah(url) {
   try {
     var res = await fetch(url);
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    var data = await res.json();
-    _cacheWilayah[url] = Array.isArray(data) ? data : null;
-    return _cacheWilayah[url];
+    var json = await res.json();
+    // wilayah.id mengembalikan { data: [...] }
+    var data = json && json.data ? json.data : (Array.isArray(json) ? json : null);
+    _cacheWilayah[url] = data;
+    return data;
   } catch(e) { return null; }
 }
 
@@ -1795,7 +1797,7 @@ function setWilayahLoading(id, on) {
 
 // ── Helper: apakah kabupaten pakai data offline? ──────────────────────────────
 function isOfflineKab(kabId) {
- return kabId === '7318' || kabId === '7326' || kabId === '3278'|| kabid === '';
+  return kabId === '7318' || kabId === '7326' || kabId === '3278';
 }
 
 function getDataKecOffline(kabId) {
@@ -1853,10 +1855,10 @@ async function muatKabupaten() {
     return;
   }
 
-  // Provinsi lain: fetch emsifa
+  // Provinsi lain: fetch dari wilayah.id API
   kabEl.innerHTML = '<option value="">⏳ Memuat kabupaten…</option>';
   setWilayahLoading('loadKabupaten', true);
-  var url  = EMSIFA_BASE + '/regencies/' + provId + '.json';
+  var url  = WILAYAH_BASE + '/regencies/' + provId + '.json';
   var data = await fetchWilayah(url);
   setWilayahLoading('loadKabupaten', false);
   kabEl.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
@@ -1870,8 +1872,8 @@ async function muatKabupaten() {
 }
 
 // ── muatKecamatan ─────────────────────────────────────────────────────────────
-// ✅ TANA TORAJA (7318) & TORAJA UTARA (7325): gunakan data embed offline
-// ✅ Kabupaten lain: fetch emsifa API
+// ✅ TANA TORAJA (7318) & TORAJA UTARA (7326): gunakan data embed offline
+// ✅ Kabupaten lain: fetch wilayah.id API
 async function muatKecamatan() {
   var kabId  = document.getElementById('f_kabupaten').value;
   var kecEl  = document.getElementById('f_kec');
@@ -1905,10 +1907,10 @@ async function muatKecamatan() {
     return;
   }
 
-  // Kabupaten lain: fetch dari emsifa
+  // Kabupaten lain: fetch dari wilayah.id API
   kecEl.innerHTML = '<option value="">⏳ Memuat kecamatan…</option>';
   setWilayahLoading('loadKecamatan', true);
-  var url  = EMSIFA_BASE + '/districts/' + kabId + '.json';
+  var url  = WILAYAH_BASE + '/districts/' + kabId + '.json';
   var data = await fetchWilayah(url);
   setWilayahLoading('loadKecamatan', false);
   kecEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
@@ -1916,7 +1918,7 @@ async function muatKecamatan() {
   data.forEach(function(k) {
     var o = document.createElement('option');
     o.value = k.name; o.textContent = k.name;
-    o.dataset.id = k.id;
+    o.dataset.id = k.code;
     kecEl.appendChild(o);
   });
   kecEl.disabled = false;
@@ -1925,7 +1927,7 @@ async function muatKecamatan() {
 
 // ── muatDesa ──────────────────────────────────────────────────────────────────
 // ✅ Tana Toraja / Toraja Utara: embed offline → instan tanpa internet
-// ✅ Kabupaten lain: fetch emsifa API
+// ✅ Kabupaten lain: fetch wilayah.id API
 async function muatDesa() {
   var kabId  = document.getElementById('f_kabupaten').value;
   var kecEl  = document.getElementById('f_kec');
@@ -1961,13 +1963,13 @@ async function muatDesa() {
     return;
   }
 
-  // Kabupaten lain: fetch emsifa berdasarkan data-id kecamatan
+  // Kabupaten lain: fetch dari wilayah.id API berdasarkan code kecamatan
   var kecId = selOpt ? selOpt.dataset.id : '';
   if (!kecId) return;
 
   desaEl.innerHTML = '<option value="">⏳ Memuat desa…</option>';
   setWilayahLoading('loadDesa', true);
-  var url  = EMSIFA_BASE + '/villages/' + kecId + '.json';
+  var url  = WILAYAH_BASE + '/villages/' + kecId + '.json';
   var data = await fetchWilayah(url);
   setWilayahLoading('loadDesa', false);
   desaEl.innerHTML = '<option value="">-- Pilih Desa/Kelurahan --</option>';
